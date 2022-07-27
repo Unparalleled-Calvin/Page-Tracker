@@ -16,3 +16,13 @@ function formatDate(date, format) {
     }
     return format.replace(/yyyy|yy|MM|dd|HH|mm|ss/gi, matched => map[matched])
 }
+
+function renderGraph(id, definition) { // create a div with specific id. render the graph into it.
+    element = document.createElement("div");
+    element.id = id
+    var insertSvg = function(svgCode) {
+        element.innerHTML = svgCode;
+        document.getElementsByTagName("body")[0].append(element)
+    };
+    mermaid.mermaidAPI.render(id, definition, insertSvg);
+}

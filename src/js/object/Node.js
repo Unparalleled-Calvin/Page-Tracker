@@ -1,7 +1,7 @@
 class Node {
-    constructor(params) {
+    constructor(params = {}) {
         let defaultParams = {
-            id: "",
+            id: "root", // id in history
             url: "",
             caption: "",
             iconUrl: "",
@@ -28,5 +28,18 @@ class Node {
         this.type = defaultParams.type
         this.prev = defaultParams.prev 
         this.succ = defaultParams.succ
+    }
+    mermaid(nodes, edges, seen) { // generate mermaid text
+        let definition = ""
+        // successive edges definition
+        this.succ.forEach(edgeIndex => {
+            definition += edges[edgeIndex].mermaid(nodes, edges, seen)
+        })
+        // own definition
+        if(this.id != "root") {
+            definition += this.id + "[" + this.caption + "]" + "\n" // define the caption displayed of the node
+            definition += "click " + this.id + " href \"" + this.url + "\" _blank" + "\n" // define the click event of the node, currently 'href'
+        }
+        return definition
     }
 }
