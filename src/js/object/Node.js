@@ -9,6 +9,7 @@ class Node {
             endTime: -1, // timestamp
             totalTime: -1, // seconds
             type: "default", // default
+            highlight: 0,
             prev: [], // index of edges
             succ: [], // index of edges
         }

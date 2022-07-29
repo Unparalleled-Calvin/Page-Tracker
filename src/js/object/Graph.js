@@ -23,6 +23,12 @@ class Graph {
         let seen = new Set()
         seen.add(this.head) // the caller is responsible for adding node index into set seen
         definition += this.nodes[this.head].mermaid(this.nodes, this.edges, seen)
+        this.nodes.forEach((node, index) => { // normally there are no other connected components, add this code just for exception
+            if (!seen.has(index)) {
+                seen.add(index)
+                definition += node.mermaid(this.nodes, this.edges, seen)
+            }
+        })
         return definition
     }
     queryNode(field, value) { // query the node index by sepcific field e.g. queryNode("url", "https://www.example.com"). returns index if found, -1 otherwise
@@ -34,11 +40,12 @@ class Graph {
         return -1
     }
     queryEdge(src, dst) { // query the edge index by id of src and dst. returns index if found, -1 otherwise
-        this.edges.forEach((edge, index) => {
+        for (let index = 0; index < this.edges.length; index++) {
+            let edge = this.edges[index]
             if(edge.src == src && edge.dst == dst) {
                 return index
             }
-        })
+        }
         return -1
     }
     addNode(node) { // add a new node into nodes. make sure the node is distinct from others by method queryNode
