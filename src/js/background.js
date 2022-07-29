@@ -1,3 +1,5 @@
+let xxx = 0
+
 /**
  * history listener
  */
