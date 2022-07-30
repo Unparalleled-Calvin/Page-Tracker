@@ -9,7 +9,6 @@ async function renderGraph(id, definition) { // use or create a div with specifi
         }
         element.align = "center"
         element.style.position = "absolute"
-        // element.style.transform = "translate(-100%,-50%)"
         element.style.width = "100%"
         element.style.height = "100%"
         element.innerHTML = svg
@@ -34,6 +33,7 @@ function genRandomGraph(n) { // randomly generate a graph with n nodes with at l
 }
 
 function draggable(containerId, svgId) {
+    // refers to https://stackoverflow.com/a/52640900/15412975
     svgImage = document.getElementById(svgId);
     svgContainer = document.getElementById(containerId);
 
@@ -55,8 +55,10 @@ function draggable(containerId, svgId) {
         e.preventDefault();
         var w = viewBox.w;
         var h = viewBox.h;
-        var mx = e.offsetX;//mouse x  
-        var my = e.offsetY;
+        //var mx = e.offsetX;  // centered by point of event
+        //var my = e.offsetY;
+        var mx = parseFloat(svgContainer.clientWidth) / 2 // centered by the center of the window
+        var my = parseFloat(svgContainer.clientHeight) / 2
         var dw = w * Math.sign(e.deltaY) * 0.05;
         var dh = h * Math.sign(e.deltaY) * 0.05;
         var dx = dw * mx / svgSize.w;
