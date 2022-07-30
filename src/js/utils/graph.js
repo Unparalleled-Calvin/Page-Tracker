@@ -1,13 +1,20 @@
-function renderGraph(id, definition) { // use or create a div with specific id. render the graph into it.
-    mermaid.mermaidAPI.render(id + "-svg", definition, (svg) => {
+async function renderGraph(id, definition) { // use or create a div with specific id. render the graph into it.
+    let svgId = id + "-svg"
+    await mermaid.mermaidAPI.render(svgId, definition, (svg) => {
         let element = document.getElementById(id)
         if (!element) {
             element = document.createElement("div")
             element.id = id
             document.body.append(element)
         }
+        element.align = "center"
+        element.style.position = "absolute"
+        element.style.left = "50%"
+        element.style.top = "50%"
+        element.style.transform = "translate(-50%,-50%)"
         element.innerHTML = svg
     })
+    return svgId
 }
 
 function genRandomGraph(n) { // randomly generate a graph with n nodes with at least 2n edges

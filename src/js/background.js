@@ -63,3 +63,11 @@ function displayUrl(url) {
 function displayTrace(oldURL, newURL) {
     console.log("trace: " + oldURL + " ---> " + newURL)
 }
+
+// click extension icon
+chrome.action.onClicked.addListener((tab) => {
+    chrome.windows.create({
+        url: chrome.runtime.getURL("../html/popup.html"),
+        type: "popup"
+      });
+  });

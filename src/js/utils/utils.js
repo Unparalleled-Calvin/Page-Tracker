@@ -8,11 +8,11 @@ function formatDate(date, format) {
     const map = {
         yyyy: date.getFullYear(),
         yy: date.getFullYear().toString().slice(-2),
-        MM: date.getMonth() + 1,
-        dd: date.getDate(),
-        HH: date.getHours(),
-        mm: date.getMinutes(),
-        ss: date.getSeconds()
+        MM: date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1,
+        dd: date.getDate() < 10 ? "0" + date.getDate() : date.getDate(),
+        HH: date.getHours() < 10 ? "0" + date.getHours() : date.getHours(),
+        mm: date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes(),
+        ss: date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds()
     }
     return format.replace(/yyyy|yy|MM|dd|HH|mm|ss/gi, matched => map[matched])
 }
@@ -25,20 +25,32 @@ function getStorageKey(date) {
     return "visual-history-" + date
 }
 
-function setHistoryByDate(date, history) {
+async function setHistoryByDate(date, history) {
     let historyKey = getStorageKey(date)
     let historyObject = {}
     historyObject[historyKey] = history
-    chrome.storage.sync.set(historyObject, function (result) {
-        // console.log(result)
-    })
+    await chrome.storage.sync.set(historyObject)
 }
 
-function getHistoryByDate(date) {
+async function getHistoryByDate(date) {
     let historyKey = getStorageKey(date)
-    let history
-    chrome.storage.sync.get([historyKey], function (result) {
-        history = result.history
-    })
+    let result = await chrome.storage.sync.get([historyKey])
+    let history = result[historyKey]
     return history
+}
+
+function draggable(id) {
+    // from https://stackoverflow.com/a/6166850/15412975
+    console.log(id)
+    $("#" + id)
+    .draggable()
+    .bind('mousedown', function(event, ui){
+        // bring target to front
+        $(event.target.parentElement).append( event.target );
+    })
+    .bind('drag', function(event, ui){
+        // update coordinates manually, since top/left style props don't work on SVG
+        event.target.setAttribute('x', ui.position.left);
+        event.target.setAttribute('y', ui.position.top);
+    });
 }

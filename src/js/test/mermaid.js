@@ -21,8 +21,3 @@ function testMermaid() {
     let definition = graph.mermaid()
     renderGraph("graphDiv", definition)
 }
-
-window.onload = function () {
-    document.body.style.height = "500px"
-    document.body.style.width = "500px"
-}

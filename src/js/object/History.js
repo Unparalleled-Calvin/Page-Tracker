@@ -1,5 +1,5 @@
 class History {
-    constructor(params) {
+    constructor(params = {}) {
         let defaultParams = {
             date: formatDate(new Date(), "yyyy-MM-dd"),
             graph: new Graph()
