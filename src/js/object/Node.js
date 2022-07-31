@@ -13,11 +13,13 @@ class Node {
             prev: [], // index of edges
             succ: [], // index of edges
         }
-        if("node" in params) { // only pass parameter node when constructing an instance from an existing object
-            $.extend(defaultParams, params.node)
+        if ("node" in params) { // only pass parameter node when constructing an instance from an existing object
+            Object.assign(defaultParams, params.node || {})
+            // $.extend(defaultParams, params.node)
         }
         else {
-            $.extend(defaultParams, params)
+            Object.assign(defaultParams, params || {})
+            // $.extend(defaultParams, params)
         }
         this.id = defaultParams.id
         this.url = defaultParams.url
@@ -27,7 +29,8 @@ class Node {
         this.endTime = defaultParams.endTime
         this.totalTime = defaultParams.totalTime
         this.type = defaultParams.type
-        this.prev = defaultParams.prev 
+        this.highlight = defaultParams.highlight
+        this.prev = defaultParams.prev
         this.succ = defaultParams.succ
     }
     mermaid(nodes, edges, seen) { // generate mermaid text
@@ -37,7 +40,7 @@ class Node {
             definition += edges[edgeIndex].mermaid(nodes, edges, seen)
         })
         // own definition
-        if(this.id != "root") {
+        if (this.id != "root") {
             definition += this.id + "[" + this.caption + "]" + "\n" // define the caption displayed of the node
             definition += "click " + this.id + " href \"" + this.url + "\" _blank" + "\n" // define the click event of the node, currently 'href'
         }

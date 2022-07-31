@@ -13,7 +13,12 @@
         "scripting",
         "storage",
         "webNavigation",
-        "history"
+        "history",
+        "webRequest",
+        "*://*.google.com/"
+    ],
+    "host_permissions": [
+        "<all_urls>"
     ],
     "background": {
         "service_worker": "./js/background.js"
