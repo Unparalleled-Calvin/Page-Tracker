@@ -84,12 +84,22 @@ chrome.tabs.onActivated.addListener(() => {
 //     { urls: ["<all_urls>"] }
 // )
 
+chrome.runtime.onMessage.addListener(function (request, sender) {
+    if (request.text === "focusLost") {
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+            console.log(tabs[0])
+        })
+    }
+})
 
 /**
  * web navigation listener
  */
 chrome.webNavigation.onBeforeNavigate.addListener((details) => {
     if (details.frameType == "outermost_frame") {
+        // chrome.tabs.query({ lastFocusedWindow: true, currentWindow: true }, function (tabs) {
+        //     console.log(tabs[0])
+        // })
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             console.log(tabs[0])
         })

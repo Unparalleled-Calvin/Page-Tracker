@@ -3,7 +3,9 @@
     "name": "Visual History",
     "version": "1.0",
     "description": "A plug-in providing friendly & visual browsing history on Edge & Chrome.",
-    "icons": {},
+    "icons": {
+        "128": "icon/icon_128.png"
+    },
     "action": {
         "default_title": "Click to show your browsing history"
     },
@@ -14,13 +16,13 @@
         "storage",
         "webNavigation",
         "history",
-        "webRequest",
-        "*://*.google.com/"
-    ],
-    "host_permissions": [
-        "<all_urls>"
+        "webRequest"
     ],
     "background": {
         "service_worker": "./js/background.js"
-    }
+    },
+    "content_scripts": [{
+        "matches": ["<all_urls>"],
+        "js": ["js/content.js"]
+    }]
 }
