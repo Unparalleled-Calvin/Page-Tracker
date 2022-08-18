@@ -53,10 +53,12 @@ chrome.tabs.onActivated.addListener(() => {
                 // create a new history instance
                 let newHistory = new History()
                 let newNode = new Node({
-                    url: value, caption: activeTab.title,
+                    url: value,
+                    caption: activeTab.title,
                     iconUrl: activeTab.favIconUrl
                 })
                 currIdx = newHistory.graph.addNode(newNode)
+                newNode.id = currIdx
                 newHistory.graph.addEdge(new Edge({ src: 0, dst: currIdx }))
                 history = newHistory
                 currentNode = newNode
@@ -129,6 +131,7 @@ function handleNavigation(startUrl, endUrl) {
             currIdx = history.graph.queryNode("url", startUrl)
             if (currIdx == -1) {
                 let newNode = new Node({ //TODO: need more info
+                    id: history.graph.nodes.length,
                     url: startUrl
                 })
                 currIdx = history.graph.addNode(newNode)
@@ -137,6 +140,7 @@ function handleNavigation(startUrl, endUrl) {
             targetIdx = history.graph.queryNode("url", endUrl)
             if (targetIdx == -1) {
                 let newNode = new Node({ //TODO: need more info
+                    id: history.graph.nodes.length,
                     url: endUrl
                 })
                 targetIdx = history.graph.addNode(newNode)
@@ -164,6 +168,7 @@ function handleNavigation(startUrl, endUrl) {
                 iconUrl: activeTab.favIconUrl
             })
             currIdx = newHistory.graph.addNode(newNode)
+            newNode.id = currIdx
             newHistory.graph.addEdge(new Edge({ src: 0, dst: currIdx }))
             history = newHistory
         }
