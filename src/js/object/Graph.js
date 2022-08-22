@@ -24,6 +24,11 @@ class Graph {
         definition += "flowchart LR" + "\n"
         let seen = new Set()
         seen.add(this.head) // the caller is responsible for adding node index into set seen
+        this.nodes.forEach((node, index) => { // link subgraphs to root
+            if (!node.prev.length && !node.index) {
+                this.addEdge(new Edge({src: 0, dst: index}))
+            }
+        })
         definition += this.nodes[this.head].mermaid(this.nodes, this.edges, seen)
         this.nodes.forEach((node, index) => { // normally there are no other connected components, add this code just for exception
             if (!seen.has(index)) {

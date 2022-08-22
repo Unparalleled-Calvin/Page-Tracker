@@ -27,11 +27,9 @@ class Edge {
             definition += nodes[this.dst].mermaid(nodes, edges, seen)
         }
         // own definition
-        if (this.src != 0 && this.dst != 0) {
-            let srcNode = nodes[this.src]
-            let dstNode = nodes[this.dst]
-            definition += srcNode.id + "-->" + dstNode.id + "\n" // use '-->' temporarily
-        }
+        let srcNode = nodes[this.src]
+        let dstNode = nodes[this.dst]
+        definition += srcNode.id + "-->" + dstNode.id + "\n" // use '-->' temporarily
         return definition
     }
 }

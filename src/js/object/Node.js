@@ -40,10 +40,12 @@ class Node {
             definition += edges[edgeIndex].mermaid(nodes, edges, seen)
         })
         // own definition
-        if (this.id != "root") {
-            definition += this.id + "[" + this.caption + "]" + "\n" // define the caption displayed of the node
-            definition += "click " + this.id + " href \"" + this.url + "\" _blank" + "\n" // define the click event of the node, currently 'href'
-        }
+        let id = this.id
+        let url = this.url ? this.url : " "
+        let caption = this.caption ? this.caption : url
+        caption = caption.length > 20 ? caption.substring(0, 20) + "..." : caption
+        definition += id + "[\"" + caption + "\"]" + "\n" // define the caption displayed of the node
+        definition += "click " + id + " href \"" + url + "\" _blank" + "\n" // define the click event of the node, currently 'href'
         return definition
     }
 }
