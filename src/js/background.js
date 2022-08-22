@@ -12,7 +12,7 @@ try {
 }
 
 /**
- * history listener
+ * history listener "replenish the nodes' content"
  */
 // chrome.history.onVisited.addListener((result) => {
 //     console.log(result)
@@ -271,8 +271,33 @@ function updateCurrentUrlStorage(value) {
     })
 }
 
+// search for all history items in last 24h and update them if they are in the record
+function updateAdditionInfo(){
+    let today = new Date()
+    getHistoryByDate(today).then((history) => {
+        if (history) {
+            chrome.history.search({text: ''}, result => {
+                for(var i = 0; i < result.length; i++){
+                    let idx = history.graph.queryNode("url", result[i].url)
+                    if(idx != -1){
+                        let node = history.graph.nodes[idx]
+                        node.caption = result[i].title
+                        node.id = result[i].id
+                        history.graph.nodes[idx] = node
+                    }
+                }
+                setHistoryByDate(today, history)
+            })
+        }
+    })
+    chrome.history.search({text: ''}, result => {
+
+    })
+}
+
 // click extension icon
 chrome.action.onClicked.addListener((tab) => {
+    updateAdditionInfo()
     chrome.windows.create({
         url: chrome.runtime.getURL("../html/popup.html"),
         type: "popup"
