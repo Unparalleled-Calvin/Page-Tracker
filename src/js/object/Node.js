@@ -8,6 +8,9 @@ class Node {
             startTime: -1, // timestamp
             endTime: -1, // timestamp
             totalTime: -1, // seconds
+            visitCount: 0,
+            isCollected: 0,
+            isCopied: 0,
             type: "default", // default
             highlight: 0,
             prev: [], // index of edges
@@ -28,6 +31,9 @@ class Node {
         this.startTime = defaultParams.startTime
         this.endTime = defaultParams.endTime
         this.totalTime = defaultParams.totalTime
+        this.visitCount = defaultParams.visitCount
+        this.isCollected = defaultParams.isCollected
+        this.isCopied = defaultParams.isCopied
         this.type = defaultParams.type
         this.highlight = defaultParams.highlight
         this.prev = defaultParams.prev

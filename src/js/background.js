@@ -281,17 +281,26 @@ function updateAdditionInfo(){
                     let idx = history.graph.queryNode("url", result[i].url)
                     if(idx != -1){
                         let node = history.graph.nodes[idx]
+                        let promise
+                        promise = new Promise(function (resolve, reject){
+                            resolve(chrome.bookmarks.search({url: result[i].url}))
+                        })
                         node.caption = result[i].title
                         node.id = result[i].id
-                        history.graph.nodes[idx] = node
+                        node.visitCount = result[i].visitCount
+
+                        promise.then(results =>{
+                            if(results.length != 0){
+                                node.isCollected = 1
+                            }
+                            history.graph.nodes[idx] = node
+                            setHistoryByDate(today, history)
+                        })
                     }
                 }
-                setHistoryByDate(today, history)
+                
             })
         }
-    })
-    chrome.history.search({text: ''}, result => {
-
     })
 }
 

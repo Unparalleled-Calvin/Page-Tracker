@@ -16,7 +16,8 @@
         "storage",
         "webNavigation",
         "history",
-        "webRequest"
+        "webRequest",
+        "bookmarks"
     ],
     "background": {
         "service_worker": "./js/background.js"
