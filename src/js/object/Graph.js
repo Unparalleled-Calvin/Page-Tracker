@@ -19,25 +19,27 @@ class Graph {
         this.nodes = defaultParams.nodes
         this.edges = defaultParams.edges
     }
-    mermaid() { // generate mermaid text
-        let definition = ""
-        definition += "flowchart LR" + "\n"
-        let seen = new Set()
-        seen.add(this.head) // the caller is responsible for adding node index into set seen
-        this.nodes.forEach((node, index) => { // link subgraphs to root
-            if (!node.prev.length && !node.index) {
-                this.addEdge(new Edge({src: 0, dst: index}))
-            }
+    dagre() {
+        let g = new dagreD3.graphlib.Graph()
+            .setGraph({
+                rankdir: 'LR'
+            })
+            .setDefaultEdgeLabel(function () { return {}; });
+        this.nodes.forEach((node, index) => {
+            g.setNode(index, {
+                label: node.caption,
+                style: "fill:#fff;stroke:#000"
+            })
         })
-        definition += this.nodes[this.head].mermaid(this.nodes, this.edges, seen)
-        this.nodes.forEach((node, index) => { // normally there are no other connected components, add this code just for exception
-            if (!seen.has(index)) {
-                seen.add(index)
-                definition += node.mermaid(this.nodes, this.edges, seen)
-            }
+        this.edges.forEach((edge, index) => {
+            g.setEdge(edge.src, edge.dst, {
+                style: "fill:#fff;stroke:#333;stroke-width:1.5px"
+            })
         })
-        return definition
+        return g
     }
+
+
     queryNode(field, value) { // query the node index by sepcific field e.g. queryNode("url", "https://www.example.com"). returns index if found, -1 otherwise
         let idx = -1
         this.nodes.forEach((node, index) => {

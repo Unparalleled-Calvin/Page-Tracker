@@ -39,19 +39,4 @@ class Node {
         this.prev = defaultParams.prev
         this.succ = defaultParams.succ
     }
-    mermaid(nodes, edges, seen) { // generate mermaid text
-        let definition = ""
-        // successive edges definition
-        this.succ.forEach(edgeIndex => {
-            definition += edges[edgeIndex].mermaid(nodes, edges, seen)
-        })
-        // own definition
-        let id = this.id
-        let url = this.url ? this.url : " "
-        let caption = this.caption ? this.caption : url
-        caption = caption.length > 20 ? caption.substring(0, 20) + "..." : caption
-        definition += id + "[\"" + caption + "\"]" + "\n" // define the caption displayed of the node
-        definition += "click " + id + " href \"" + url + "\" _blank" + "\n" // define the click event of the node, currently 'href'
-        return definition
-    }
 }

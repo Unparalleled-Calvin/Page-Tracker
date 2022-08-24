@@ -41,19 +41,3 @@ async function getHistoryByDate(date) {
     }
     return history
 }
-
-function draggable(id) {
-    // from https://stackoverflow.com/a/6166850/15412975
-    console.log(id)
-    $("#" + id)
-        .draggable()
-        .bind('mousedown', function (event, ui) {
-            // bring target to front
-            $(event.target.parentElement).append(event.target);
-        })
-        .bind('drag', function (event, ui) {
-            // update coordinates manually, since top/left style props don't work on SVG
-            event.target.setAttribute('x', ui.position.left);
-            event.target.setAttribute('y', ui.position.top);
-        });
-}

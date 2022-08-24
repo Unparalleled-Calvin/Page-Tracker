@@ -19,17 +19,4 @@ class Edge {
         this.src = defaultParams.src
         this.dst = defaultParams.dst
     }
-    mermaid(nodes, edges, seen) { // generate mermaid text
-        let definition = ""
-        // dst node definition
-        if (!seen.has(this.dst) && this.dst != -1) {
-            seen.add(this.dst)
-            definition += nodes[this.dst].mermaid(nodes, edges, seen)
-        }
-        // own definition
-        let srcNode = nodes[this.src]
-        let dstNode = nodes[this.dst]
-        definition += srcNode.id + "-->" + dstNode.id + "\n" // use '-->' temporarily
-        return definition
-    }
 }
