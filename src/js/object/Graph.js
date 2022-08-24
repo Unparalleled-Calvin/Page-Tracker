@@ -26,20 +26,39 @@ class Graph {
             })
             .setDefaultEdgeLabel(function () { return {}; });
         this.nodes.forEach((node, index) => {
+            let labelLimit = 20
+            let label
+            if (node.caption) {
+                label = node.caption.substring(0, labelLimit) + (node.caption.length > labelLimit ? "..." : "")
+            }
+            else if (node.url) {
+                label = node.url.substring(0, labelLimit) + (node.url.length > labelLimit ? "..." : "")
+            }
+            else {
+                label = String(node.id)
+            }
             g.setNode(index, {
-                label: node.caption,
-                style: "fill:#fff;stroke:#000"
+                label: label,
+                class: node.type
             })
+            if (!node.prev.length && index) {
+                g.setEdge(0, index, {
+                    style: "fill:#fff;stroke:#333;stroke-width:1.5px"
+                })
+            }
         })
         this.edges.forEach((edge, index) => {
             g.setEdge(edge.src, edge.dst, {
                 style: "fill:#fff;stroke:#333;stroke-width:1.5px"
             })
         })
+
+        g.nodes().forEach(function (v) {
+            var node = g.node(v);
+            node.rx = node.ry = 5;
+        });
         return g
     }
-
-
     queryNode(field, value) { // query the node index by sepcific field e.g. queryNode("url", "https://www.example.com"). returns index if found, -1 otherwise
         let idx = -1
         this.nodes.forEach((node, index) => {

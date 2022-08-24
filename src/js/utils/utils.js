@@ -41,3 +41,8 @@ async function getHistoryByDate(date) {
     }
     return history
 }
+
+async function deleteHistoryByDate(date) {
+    let historyKey = getStorageKey(date)
+    await chrome.storage.sync.remove(historyKey)
+}
