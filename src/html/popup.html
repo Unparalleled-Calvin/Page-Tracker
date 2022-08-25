@@ -8,19 +8,27 @@
     <script src="../js/lib/jquery-3.6.0.min.js"></script>
     <script src="../js/lib/d3.min.js"></script>
     <script src="../js/lib/dagre-d3.min.js"></script>
-    <script src="../js/lib/jquery-ui.min.js"></script>
     <script src="../js/utils/utils.js"></script>
     <script src="../js/popup.js"></script>
     <script src="../js/test/constructor.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/node.css">
     <link rel="stylesheet" type="text/css" href="../css/edge.css">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <title>Page Tracker</title>
 </head>
 
 <body style="overflow: hidden;">
-    <svg id="history">
-        <g></g>
-    </svg>
-    <div id="tooltip"></div>
+    <div class="sidebar">
+        <div class="sidebar-header">Page Tracker</div>
+        <div class="sidebar-item"></div>
+    </div>
+    <div class="content">
+        <div class="toggle-button active">Sidebar</div>
+        <svg id="history">
+            <g></g>
+        </svg>
+    </div>
+    <div class="tooltip" id="tooltip"></div>
 </body>
 
 </html>

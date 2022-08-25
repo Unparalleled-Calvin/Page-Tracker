@@ -1,0 +1,52 @@
+.tooltip {
+    border: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    padding: 2px;
+    position: absolute;
+    background-color: #000000b4;
+    color: rgb(255, 255, 255);
+    min-width: 50px;
+    max-width: 200px;
+    min-height: 50px;
+    overflow-wrap: anywhere;
+}
+
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0px;
+    left: 0px;
+    overflow-x: hidden;
+    background-color: rgb(255, 241, 241);
+    transition: 0.5s;
+}
+
+.sidebar .sidebar-header {
+    font-size: 30px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.sidebar .sidebar-item {
+    font-size: 15px;
+}
+
+.toggle-button {
+    font-size: 15px;
+    border-radius: 5px;
+    background-color: rgb(125, 205, 255);
+    height: 30px;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content {
+    transition: margin-left 0.5s;
+    padding: 10px;
+    margin-left: 250px;
+}

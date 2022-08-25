@@ -22,7 +22,7 @@ function getStorageKey(date) {
     if (!patt.test(date)) {
         date = formatDate(date, "yyyy-MM-dd")
     }
-    return "visual-history-" + date
+    return "page-tracker-" + date
 }
 
 async function setHistoryByDate(history, date = new Date()) {

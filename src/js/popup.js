@@ -13,10 +13,17 @@ let refreshInterval = 3000
 
 window.onload = function () {
     readAndRenderGraph(displayDate, containerId, tooltipId, zoom, refreshInterval)
+    d3.select(".toggle-button").on("click", function () {
+        if(d3.select(this).classed("active")) {
+            d3.select(".sidebar").style("width", "0px");
+            d3.select(".content").style("margin-left", "0px");
+            d3.select(this).classed("active", false);
+        }
+        else{
+            d3.select(".sidebar").style("width", "250px");
+            d3.select(".content").style("margin-left", "250px");
+            d3.select(this).classed("active", true);
+        }
+    })
 }
 
-window.onresize = function () {
-    d3.select(containerSelector)
-        .attr("width", window.innerWidth)
-        .attr("height", window.innerHeight)
-}
