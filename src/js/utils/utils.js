@@ -29,12 +29,12 @@ async function setHistoryByDate(date, history) {
     let historyKey = getStorageKey(date)
     let historyObject = {}
     historyObject[historyKey] = JSON.stringify(history)
-    await chrome.storage.sync.set(historyObject)
+    await chrome.storage.local.set(historyObject)
 }
 
 async function getHistoryByDate(date) {
     let historyKey = getStorageKey(date)
-    let result = await chrome.storage.sync.get([historyKey])
+    let result = await chrome.storage.local.get([historyKey])
     let history = null
     if (result[historyKey]) {
         history = new History({ history: JSON.parse(result[historyKey]) })
@@ -44,5 +44,5 @@ async function getHistoryByDate(date) {
 
 async function deleteHistoryByDate(date) {
     let historyKey = getStorageKey(date)
-    await chrome.storage.sync.remove(historyKey)
+    await chrome.storage.local.remove(historyKey)
 }
