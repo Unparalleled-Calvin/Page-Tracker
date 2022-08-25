@@ -1,11 +1,35 @@
-g.default > rect {
+.node.default rect {
     stroke: rgb(143, 111, 255);
     stroke-width: 2px;
     fill: rgb(255, 255, 255);
+    transition: all 0.3s;
 }
 
-.edgePath path {
-    stroke: #333;
-    fill: #333;
+.node.default.focused rect {
+    stroke: rgb(95, 64, 210);
+    stroke-width: 2.5px;
+    fill: rgb(237, 233, 251);
+    transition: all 0.3s;
+}
+
+.node.default.unfocused rect {
+    stroke: rgb(218, 208, 255);
     stroke-width: 1.5px;
+    fill: rgb(255, 255, 255);
+    transition: all 0.3s;
+}
+
+.node.default a:link {
+    color: #000000;
+    text-decoration: none;
+}
+
+.node.default a:visited {
+    color: #000000;
+    text-decoration: none;
+}
+
+.node.default a:hover {
+    color: #000000;
+    text-decoration: none;
 }

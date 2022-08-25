@@ -38,18 +38,19 @@ class Graph {
                 label = String(node.id)
             }
             g.setNode(index, {
-                label: label,
+                labelType: "html",
+                label: "<a href=" + node.url + " target=_blank>" + label + "</a>",
                 class: node.type
             })
             if (!node.prev.length && index) {
                 g.setEdge(0, index, {
-                    style: "fill:#fff;stroke:#333;stroke-width:1.5px"
+                    class: "default",
                 })
             }
         })
         this.edges.forEach((edge, index) => {
             g.setEdge(edge.src, edge.dst, {
-                style: "fill:#fff;stroke:#333;stroke-width:1.5px"
+                class: edge.type,
             })
         })
 
@@ -57,6 +58,7 @@ class Graph {
             var node = g.node(v);
             node.rx = node.ry = 5;
         });
+
         return g
     }
     queryNode(field, value) { // query the node index by sepcific field e.g. queryNode("url", "https://www.example.com"). returns index if found, -1 otherwise

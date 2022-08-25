@@ -29,6 +29,18 @@ window.onload = function () {
 
         let gBox= d3.select(containerSelector + " g").node().getBoundingClientRect()
         svg.attr("viewBox", "" + (gBox.width - window.innerWidth) / 2 + " " + (gBox.height - window.innerHeight) / 2 + " " + window.innerWidth + " " + window.innerHeight) // show svg in center
+    
+        d3.selectAll(".node").on("mouseover", function () {
+            d3.selectAll(".node").classed("unfocused", true);
+            d3.selectAll(".edgePath").classed("unfocused", true);
+            d3.select(this).classed("focused", true);
+            d3.select(this).classed("unfocused", false);
+        });
+        d3.selectAll(".node").on("mouseleave", function () {
+            d3.selectAll(".node").classed("unfocused", false);
+            d3.selectAll(".edgePath").classed("unfocused", false);
+            d3.select(this).classed("focused", false);
+        });
     })
 }
 

@@ -1,0 +1,13 @@
+.edgePath.default path {
+    stroke: rgb(48, 21, 144);
+    fill: rgb(48, 21, 144);
+    stroke-width: 1.5px;
+    transition: all 0.3s;
+}
+
+.edgePath.default.unfocused path {
+    stroke: rgb(201, 187, 251);
+    fill: rgb(183, 164, 252);
+    stroke-width: 1.5px;
+    transition: all 0.3s;
+}
