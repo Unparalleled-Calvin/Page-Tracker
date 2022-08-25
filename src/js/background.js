@@ -71,7 +71,7 @@ chrome.tabs.onActivated.addListener(() => {
             }
 
             // 3. update to storage
-            setHistoryByDate(today, history)
+            setHistoryByDate(history, today)
         })
     })
 })
@@ -178,7 +178,7 @@ function handleNavigation(startUrl, endUrl) {
         history.graph.toggleSwitch(targetIdx)
 
         // 3. update to storage
-        setHistoryByDate(today, history)
+        setHistoryByDate(history, today)
     })
 
     updateCurrentUrlStorage(endUrl)
@@ -221,7 +221,7 @@ function updateAdditionInfo(){
                                 node.isCollected = 1
                             }
                             history.graph.nodes[idx] = node
-                            setHistoryByDate(today, history)
+                            setHistoryByDate(history, today)
                         })
                     }
                 }
