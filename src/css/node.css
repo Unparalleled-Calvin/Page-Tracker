@@ -33,3 +33,17 @@
     color: #000000;
     text-decoration: none;
 }
+
+#tooltip {
+    border: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    padding: 2px;
+    position: absolute;
+    background-color: #000000b4;
+    color: rgb(255, 255, 255);
+    min-width: 50px;
+    max-width: 200px;
+    min-height: 50px;
+    overflow-wrap: anywhere;
+}
