@@ -63,10 +63,12 @@ chrome.tabs.onActivated.addListener(() => {
                 history = newHistory
                 currentNode = newNode
             }
-            // console.log(currentNode)
 
             // 2. change the highlight status
-            history.graph.toggleSwitch(currIdx)
+            if(currIdx != -1){
+                console.log(currIdx)
+                history.graph.toggleSwitch(currIdx)
+            }
 
             // 3. update to storage
             setHistoryByDate(today, history)
@@ -119,7 +121,7 @@ chrome.webNavigation.onBeforeNavigate.addListener((details) => {
 })
 
 function handleNavigation(startUrl, endUrl) {
-    //0. demonstrate
+    // 0. demonstrate
     displayTrace(startUrl, endUrl)
     // 1. maintain the relations
     let today = new Date()
@@ -157,24 +159,23 @@ function handleNavigation(startUrl, endUrl) {
             // 1.3.2 otherwise do nothing in step 1.3
 
         } else {
-            // may not go into this branch
-            // (extreme case: this event happens at in a new day without a previous tab change)
+            // may not go into this branch (extreme case: this event happens at in a new day without a previous tab change)
 
             // create a new history instance
             let newHistory = new History()
             let newNode = new Node({ //TODO: need more info
-                url: value,
-                caption: activeTab.title,
-                iconUrl: activeTab.favIconUrl
+                id: history.graph.nodes.length,
+                url: endUrl
             })
             currIdx = newHistory.graph.addNode(newNode)
-            newNode.id = currIdx
+            targetIdx = currIdx
             newHistory.graph.addEdge(new Edge({ src: 0, dst: currIdx }))
             history = newHistory
         }
 
+        console.log(targetIdx)
         // 2. change the highlight status
-        history.graph.toggleSwitch(currIdx)
+        history.graph.toggleSwitch(targetIdx)
 
         // 3. update to storage
         setHistoryByDate(today, history)
