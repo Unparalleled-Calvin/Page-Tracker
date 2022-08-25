@@ -1,10 +1,12 @@
 {
     "manifest_version": 3,
-    "name": "Visual History",
+    "name": "Page Tracker",
     "version": "1.0",
     "description": "A plug-in providing friendly & visual browsing history on Edge & Chrome.",
     "icons": {
-        "128": "icon/icon_128.png"
+        "128": "icon/icon_128.png",
+        "48": "icon/icon_48.png",
+        "16": "icon/icon_16.png"
     },
     "action": {
         "default_title": "Click to show your browsing history"
