@@ -17,16 +17,22 @@
     <title>Page Tracker</title>
 </head>
 
-<body style="overflow: hidden;">
+<body style="overflow: hidden; height: 100%">
     <div class="sidebar">
         <div class="sidebar-header">Page Tracker</div>
         <div class="sidebar-item"></div>
     </div>
     <div class="content">
-        <div class="toggle-button active">Sidebar</div>
-        <svg id="history">
-            <g></g>
-        </svg>
+        <div class="nav">
+            <div class="toggle-button active">Sidebar</div>
+        </div>
+        <div class="canvas">
+            <div class="canvas-display">
+                <svg id="history">
+                    <g></g>
+                </svg>
+            </div>
+        </div>
     </div>
     <div class="tooltip" id="tooltip"></div>
 </body>

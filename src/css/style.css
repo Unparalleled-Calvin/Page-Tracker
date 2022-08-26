@@ -9,12 +9,14 @@
     min-width: 50px;
     max-width: 200px;
     min-height: 50px;
+    left: -500px;
+    top: -500px;
     overflow-wrap: anywhere;
 }
 
 .sidebar {
     height: 100%;
-    width: 250px;
+    width: 25%;
     position: fixed;
     z-index: 1;
     top: 0px;
@@ -34,19 +36,46 @@
     font-size: 15px;
 }
 
-.toggle-button {
+.content {
+    transition: 0.5s;
+    position: absolute;
+    height: 100%;
+    width: 75%;
+    left: 25%;
+    top: 0%;
+    padding: 0;
+}
+
+.nav {
+    height: 5%;
+    background-color: rgb(255, 242, 239);
+    display: flex;
+    align-items: center;
+}
+
+.nav .toggle-button {
     font-size: 15px;
     border-radius: 5px;
     background-color: rgb(125, 205, 255);
-    height: 30px;
-    width: 60px;
+    height: 80%;
+    width: 10%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.content {
-    transition: margin-left 0.5s;
-    padding: 10px;
-    margin-left: 250px;
+.canvas {
+    width: 100%;
+    height: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.canvas-display {
+    border-style: solid;
+    border-color: black;
+    overflow: hidden;
+    height: 95%;
+    width: 95%;
 }

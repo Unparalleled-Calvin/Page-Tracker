@@ -36,8 +36,8 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom, refreshInterval)
             let svg = d3
                 .select(containerSelector)
                 .html("<g></g>")
-                .attr("width", window.innerWidth)
-                .attr("height", window.innerHeight)
+                .attr("width", "100%")
+                .attr("height", "100%")
             render(d3.select(containerSelector + " g"), g);
             let svgGroup = d3.select(containerSelector + " g")
             zoom.on("zoom", function () {
