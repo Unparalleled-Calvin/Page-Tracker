@@ -15,7 +15,7 @@ function genRandomGraph(n) { // randomly generate a graph with n nodes with at l
 }
 
 let previousTransform
-// let firstDisplay = true
+let firstDisplay = true
 let previousGraphJSON
 let lastSetTimeOut
 
@@ -60,11 +60,12 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom, refreshInterval)
             svg.call(zoom.transform, transform);
             svg.call(zoom);
 
-            // if (firstDisplay) {
-            //     firstDisplay = false
-            //     let gBox = d3.select(containerSelector + " g").node().getBoundingClientRect()
-            //     svg.attr("viewBox", "" + (gBox.width - window.innerWidth) / 2 + " " + (gBox.height - window.innerHeight) / 2 + " " + window.innerWidth + " " + window.innerHeight) // show svg in center
-            // }
+            if (firstDisplay) {
+                firstDisplay = false
+                let gBox = d3.select(containerSelector + " g").node().getBoundingClientRect()
+                let svgBox = d3.select(containerSelector).node().getBoundingClientRect()
+                svg.attr("viewBox", "" + (gBox.width - svgBox.width) / 2 + " " + (gBox.height - svgBox.height) / 2 + " " + svgBox.width + " " + svgBox.height) // show svg in center
+            }
 
             d3.selectAll(".node").on("mouseenter", function (id) {
                 d3.selectAll(".node").classed("unfocused", true);
@@ -107,8 +108,10 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom, refreshInterval)
 
 function refreshPage(date, containerId, tooltipId, zoom, refreshInterval) {
     previousTransform = undefined
+    firstDisplay = true
     if (lastSetTimeOut) {
         clearTimeout(lastSetTimeOut)
     }
+    lastSetTimeOut = undefined
     readAndRenderGraph(date, containerId, tooltipId, zoom, refreshInterval)
 }
