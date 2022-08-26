@@ -5,15 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../js/lib/jquery-3.6.0.min.js"></script>
-    <script src="../js/lib/d3.min.js"></script>
-    <script src="../js/lib/dagre-d3.min.js"></script>
-    <script src="../js/utils/utils.js"></script>
-    <script src="../js/popup.js"></script>
-    <script src="../js/test/constructor.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/node.css">
     <link rel="stylesheet" type="text/css" href="../css/edge.css">
     <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" href="../css/calendar.css">
     <title>Page Tracker</title>
 </head>
 
@@ -21,6 +16,23 @@
     <div class="sidebar">
         <div class="sidebar-header">Page Tracker</div>
         <div class="sidebar-item"></div>
+        <div class="calendar" id="table">
+            <div class="calendar-header">
+                <button class="btn" id="prevMonth">&lt;</button>
+                <div class="month" id="month-header"></div>
+                <button class="btn" id="nextMonth">&gt;</button>
+            </div>
+            <div class="calendar-table" id="calendar-table"></div>
+            <div class="calendar-input" id="date-search" onsubmit="return setDate(this)">
+                <input type="date" class="text-field" name="date" id="date" required>
+                <button id="date-submit" class="btn">Go</button>
+            </div>
+            <div class="day-assets">
+                <button class="btn" id="prevDay">YDA</button>
+                <button class="btn" id="resetDate">TDA</button>
+                <button class="btn" id="nextDay">TMW</button>
+            </div>
+        </div>
     </div>
     <div class="content">
         <div class="nav">
@@ -36,5 +48,13 @@
     </div>
     <div class="tooltip" id="tooltip"></div>
 </body>
+
+<script src="../js/lib/jquery-3.6.0.min.js"></script>
+<script src="../js/lib/d3.min.js"></script>
+<script src="../js/lib/dagre-d3.min.js"></script>
+<script src="../js/utils/utils.js"></script>
+<script src="../js/utils/calendar.js"></script>
+<script src="../js/popup.js"></script>
+<script src="../js/test/constructor.js"></script>
 
 </html>
