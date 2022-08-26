@@ -15,8 +15,9 @@ function genRandomGraph(n) { // randomly generate a graph with n nodes with at l
 }
 
 let previousTransform
-let firstDisplay = true
+// let firstDisplay = true
 let previousGraphJSON
+let lastSetTimeOut
 
 function readAndRenderGraph(date, containerId, tooltipId, zoom, refreshInterval) {
     getHistoryByDate(date).then(function (history) {
@@ -44,19 +45,26 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom, refreshInterval)
                 previousTransform = d3.event.transform
                 svgGroup.attr("transform", d3.event.transform);
             });
-            svg.call(zoom.transform, (previousTransform ? d3.zoomIdentity
-                .scale(previousTransform.k)
-                .translate(
-                    previousTransform.x / previousTransform.k,
-                    previousTransform.y / previousTransform.k
-                ) : d3.zoomIdentity));
+            let transform
+            if (previousTransform) {
+                transform = d3.zoomIdentity
+                    .scale(previousTransform.k)
+                    .translate(
+                        previousTransform.x / previousTransform.k,
+                        previousTransform.y / previousTransform.k
+                    )
+            }
+            else {
+                transform = d3.zoomIdentity
+            }
+            svg.call(zoom.transform, transform);
             svg.call(zoom);
 
-            if (firstDisplay) {
-                firstDisplay = false
-                let gBox = d3.select(containerSelector + " g").node().getBoundingClientRect()
-                svg.attr("viewBox", "" + (gBox.width - window.innerWidth) / 2 + " " + (gBox.height - window.innerHeight) / 2 + " " + window.innerWidth + " " + window.innerHeight) // show svg in center
-            }
+            // if (firstDisplay) {
+            //     firstDisplay = false
+            //     let gBox = d3.select(containerSelector + " g").node().getBoundingClientRect()
+            //     svg.attr("viewBox", "" + (gBox.width - window.innerWidth) / 2 + " " + (gBox.height - window.innerHeight) / 2 + " " + window.innerWidth + " " + window.innerHeight) // show svg in center
+            // }
 
             d3.selectAll(".node").on("mouseenter", function (id) {
                 d3.selectAll(".node").classed("unfocused", true);
@@ -91,8 +99,16 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom, refreshInterval)
 
         previousGraphJSON = graphJSON
 
-        setTimeout(function () {
+        lastSetTimeOut = setTimeout(function () {
             readAndRenderGraph(date, containerId, tooltipId, zoom, refreshInterval)
         }, refreshInterval);
     })
+}
+
+function refreshPage(date, containerId, tooltipId, zoom, refreshInterval) {
+    previousTransform = undefined
+    if (lastSetTimeOut) {
+        clearTimeout(lastSetTimeOut)
+    }
+    readAndRenderGraph(date, containerId, tooltipId, zoom, refreshInterval)
 }

@@ -1,18 +1,15 @@
-addScript("../js/object/History.js")
-addScript("../js/object/Graph.js")
-addScript("../js/object/Node.js")
-addScript("../js/object/Edge.js")
-
-addScript("../js/utils/graph.js")
-
-let displayDate = new Date()
 let containerId = "history"
 let tooltipId = "tooltip"
 let zoom = d3.zoom()
 let refreshInterval = 3000
 
+let refreshEvent = new CustomEvent('refresh', {})
+
+window.addEventListener('refresh', function () {
+    refreshPage(date, containerId, tooltipId, zoom, refreshInterval);
+}, false);
+
 window.onload = function () {
-    readAndRenderGraph(displayDate, containerId, tooltipId, zoom, refreshInterval)
     d3.select(".toggle-button").on("click", function () {
         if(d3.select(this).classed("active")) {
             d3.select(".sidebar").style("width", "0%");
@@ -27,5 +24,6 @@ window.onload = function () {
             d3.select(this).classed("active", true);
         }
     })
+    window.dispatchEvent(refreshEvent)
 }
 

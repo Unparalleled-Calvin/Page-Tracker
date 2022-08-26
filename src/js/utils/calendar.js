@@ -19,7 +19,6 @@ let date = new Date();
 
 function getCurrentDate(element) {
     if (element) {
-        console.log("?")
         return element.value = formatDate(date, "yyyy-MM-dd").substr(0, 10);
     }
     return date;
@@ -104,6 +103,8 @@ function generateCalendar() {
     changeHeader(date);
     document.getElementById("date").textContent = date;
     getCurrentDate(document.getElementById("date"));
+
+    window.dispatchEvent(refreshEvent)
 }
 
 function setDate(form) {
@@ -162,7 +163,6 @@ function prevMonth() {
 
 function prevDay() {
     date = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1, date.getHours());
-    console.log(123)
     generateCalendar();
 }
 
