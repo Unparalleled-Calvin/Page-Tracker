@@ -19,13 +19,20 @@
         "webNavigation",
         "history",
         "webRequest",
-        "bookmarks"
+        "bookmarks",
+        "idle"
     ],
     "background": {
         "service_worker": "./js/background.js"
     },
-    "content_scripts": [{
-        "matches": ["<all_urls>"],
-        "js": ["js/content.js"]
-    }]
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "js/content.js"
+            ]
+        }
+    ]
 }

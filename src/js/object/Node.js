@@ -7,7 +7,7 @@ class Node {
             iconUrl: "",
             startTime: -1, // timestamp
             endTime: -1, // timestamp
-            totalTime: -1, // seconds
+            totalTime: 0, // seconds
             visitCount: 0,
             isCollected: 0,
             isCopied: 0,
@@ -41,17 +41,17 @@ class Node {
     }
     infoHTML() {
         let html = "id: " + this.id + "<br>"
-             + "url: " + this.url + "<br>"
-             + "caption: " + this.caption + "<br>"
-             + "iconUrl:" + this.iconUrl + "<br>"
-             + "startTime: " + this.startTime + "<br>"
-             + "endTime: " + this.endTime + "<br>"
-             + "totalTime: " + this.totalTime + "<br>"
-             + "visitCount: " + this.visitCount + "<br>"
-             + "isCollected: " + this.isCollected + "<br>"
-             + "isCopied: " + this.isCopied + "<br>"
-             + "type: " + this.type + "<br>"
-             + "highligt: " + this.highlight + "<br>"
+            + "url: " + this.url + "<br>"
+            + "caption: " + this.caption + "<br>"
+            + "iconUrl:" + this.iconUrl + "<br>"
+            + "startTime: " + this.startTime + "<br>"
+            + "endTime: " + this.endTime + "<br>"
+            + "totalTime: " + this.totalTime + "<br>"
+            + "visitCount: " + this.visitCount + "<br>"
+            + "isCollected: " + this.isCollected + "<br>"
+            + "isCopied: " + this.isCopied + "<br>"
+            + "type: " + this.type + "<br>"
+            + "highligt: " + this.highlight + "<br>"
         return html
     }
 }

@@ -11,6 +11,7 @@ try {
     console.error(e)
 }
 
+let refreshInterval = 3
 /**
  * history listener "replenish the nodes' content"
  */
@@ -65,7 +66,7 @@ chrome.tabs.onActivated.addListener(() => {
             }
 
             // 2. change the highlight status
-            if(currIdx != -1){
+            if (currIdx != -1) {
                 console.log(currIdx)
                 history.graph.toggleSwitch(currIdx)
             }
@@ -199,25 +200,46 @@ function updateCurrentUrlStorage(value) {
 }
 
 // search for all history items in last 24h and update them if they are in the record
-function updateAdditionInfo(){
+function updateAdditionInfo() {
     let today = new Date()
     getHistoryByDate(today).then((history) => {
         if (history) {
-            chrome.history.search({text: ''}, result => {
-                for(var i = 0; i < result.length; i++){
+            // Only count time if system has not been idle for 30 seconds
+            chrome.idle.queryState(30, function (state) {
+                if (state === "active") {
+                    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+                        if (tabs.length > 0) {
+                            var activeTab = tabs[0]
+                            var url = activeTab.url || activeTab.pendingUrl
+
+                            var idx = history.graph.queryNode('url', url)
+                            if (idx != -1) {
+                                var node = history.graph.nodes[idx]
+                                node.totalTime += refreshInterval
+                                history.graph.nodes[idx] = node
+                                setHistoryByDate(history, today)
+                            }
+                        }
+                    })
+                }
+            })
+
+            // info about caption id visitCount and isCollected
+            chrome.history.search({ text: '' }, result => {
+                for (var i = 0; i < result.length; i++) {
                     let idx = history.graph.queryNode("url", result[i].url)
-                    if(idx != -1){
+                    if (idx != -1) {
                         let node = history.graph.nodes[idx]
                         let promise
-                        promise = new Promise(function (resolve, reject){
-                            resolve(chrome.bookmarks.search({url: result[i].url}))
+                        promise = new Promise(function (resolve, reject) {
+                            resolve(chrome.bookmarks.search({ url: result[i].url }))
                         })
                         node.caption = result[i].title
                         node.id = result[i].id
                         node.visitCount = result[i].visitCount
 
-                        promise.then(results =>{
-                            if(results.length != 0){
+                        promise.then(results => {
+                            if (results.length != 0) {
                                 node.isCollected = 1
                             }
                             history.graph.nodes[idx] = node
@@ -225,7 +247,6 @@ function updateAdditionInfo(){
                         })
                     }
                 }
-                
             })
         }
     })
@@ -233,9 +254,10 @@ function updateAdditionInfo(){
 
 // click extension icon
 chrome.action.onClicked.addListener((tab) => {
-    updateAdditionInfo()
     chrome.windows.create({
         url: chrome.runtime.getURL("../html/popup.html"),
         type: "popup"
     });
 });
+
+setInterval(updateAdditionInfo, refreshInterval * 1000)
