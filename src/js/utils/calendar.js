@@ -146,7 +146,7 @@ function resetDate() {
 
 function changeDate(button) {
     let newDay = parseInt(button.textContent);
-    date = new Date(date.getFullYear(), date.getMonth(), newDay, 1);
+    date = new Date(date.getFullYear(), date.getMonth(), newDay);
     generateCalendar();
 }
 
@@ -193,6 +193,8 @@ $("#nextMonth").on("click", function() {
     nextMonth()
 })
 
-$("#date-submit").on("click"), function() {
-    changeDate($(this))
-}
+$("#date-submit").on("click", function() {
+    let input = document.getElementById("date")
+    input.textContent = date = new Date(input.value)
+    generateCalendar()
+})
