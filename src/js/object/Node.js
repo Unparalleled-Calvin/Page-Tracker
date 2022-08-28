@@ -8,7 +8,7 @@ class Node {
             startTime: -1, // timestamp
             endTime: -1, // timestamp
             totalTime: 0, // seconds
-            visitCount: 0,
+            visitCount: 1,
             isCollected: 0,
             isCopied: 0,
             type: "default", // default

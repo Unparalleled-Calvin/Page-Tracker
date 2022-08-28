@@ -15,9 +15,36 @@ let refreshInterval = 3
 /**
  * history listener "replenish the nodes' content"
  */
-// chrome.history.onVisited.addListener((result) => {
-//     console.log(result)
-// })
+chrome.history.onVisited.addListener((result) => {
+    let today = new Date()
+    getHistoryByDate(today).then((history) => {
+        if (history) {
+            // info about caption id isCollected
+            chrome.history.search({ text: '' }, result => {
+                for (var i = 0; i < result.length; i++) {
+                    let idx = history.graph.queryNode("url", result[i].url)
+                    if (idx != -1) {
+                        let node = history.graph.nodes[idx]
+                        let promise
+                        promise = new Promise(function (resolve, reject) {
+                            resolve(chrome.bookmarks.search({ url: result[i].url }))
+                        })
+                        node.caption = result[i].title
+                        node.id = result[i].id
+
+                        promise.then(results => {
+                            if (results.length != 0) {
+                                node.isCollected = 1
+                            }
+                            history.graph.nodes[idx] = node
+                            setHistoryByDate(history, today)
+                        })
+                    }
+                }
+            })
+        }
+    })
+})
 
 // chrome.history.onVisitRemoved.addListener((result) => {
 //     console.log(result)
@@ -43,13 +70,9 @@ chrome.tabs.onActivated.addListener(() => {
         // 1. query the current node
         let today = new Date()
         getHistoryByDate(today).then((history) => {
-            let currentNode = null
             let currIdx = -1
             if (history) {
                 currIdx = history.graph.queryNode("url", value)
-                if (currIdx != -1) {
-                    currentNode = history.graph.nodes[currIdx]
-                }
             } else {
                 // create a new history instance
                 let newHistory = new History()
@@ -62,12 +85,14 @@ chrome.tabs.onActivated.addListener(() => {
                 newNode.id = currIdx
                 newHistory.graph.addEdge(new Edge({ src: 0, dst: currIdx }))
                 history = newHistory
-                currentNode = newNode
             }
 
             // 2. change the highlight status
-            if (currIdx != -1) {
-                console.log(currIdx)
+            if (currIdx != -1) { // switch tab not navigate
+                var node = history.graph.nodes[currIdx]
+                node.visitCount += 1
+                history.graph.nodes[currIdx] = node
+
                 history.graph.toggleSwitch(currIdx)
             }
 
@@ -120,6 +145,40 @@ chrome.webNavigation.onBeforeNavigate.addListener((details) => {
         })
     }
 })
+
+// enrich the nodes' information 
+chrome.webNavigation.onCompleted.addListener((details => {
+    if (details.frameType == "outermost_frame") {
+        let today = new Date()
+        getHistoryByDate(today).then((history) => {
+            if (history) {
+                // info about caption id isCollected
+                chrome.history.search({ text: '' }, result => {
+                    for (var i = 0; i < result.length; i++) {
+                        let idx = history.graph.queryNode("url", result[i].url)
+                        if (idx != -1) {
+                            let node = history.graph.nodes[idx]
+                            let promise
+                            promise = new Promise(function (resolve, reject) {
+                                resolve(chrome.bookmarks.search({ url: result[i].url }))
+                            })
+                            node.caption = result[i].title
+                            node.id = result[i].id
+
+                            promise.then(results => {
+                                if (results.length != 0) {
+                                    node.isCollected = 1
+                                }
+                                history.graph.nodes[idx] = node
+                                setHistoryByDate(history, today)
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    }
+}))
 
 function handleNavigation(startUrl, endUrl) {
     // 0. demonstrate
@@ -199,7 +258,7 @@ function updateCurrentUrlStorage(value) {
     })
 }
 
-// search for all history items in last 24h and update them if they are in the record
+// update time info in a time interval
 function updateAdditionInfo() {
     let today = new Date()
     getHistoryByDate(today).then((history) => {
@@ -221,31 +280,6 @@ function updateAdditionInfo() {
                             }
                         }
                     })
-                }
-            })
-
-            // info about caption id visitCount and isCollected
-            chrome.history.search({ text: '' }, result => {
-                for (var i = 0; i < result.length; i++) {
-                    let idx = history.graph.queryNode("url", result[i].url)
-                    if (idx != -1) {
-                        let node = history.graph.nodes[idx]
-                        let promise
-                        promise = new Promise(function (resolve, reject) {
-                            resolve(chrome.bookmarks.search({ url: result[i].url }))
-                        })
-                        node.caption = result[i].title
-                        node.id = result[i].id
-                        node.visitCount = result[i].visitCount
-
-                        promise.then(results => {
-                            if (results.length != 0) {
-                                node.isCollected = 1
-                            }
-                            history.graph.nodes[idx] = node
-                            setHistoryByDate(history, today)
-                        })
-                    }
                 }
             })
         }
