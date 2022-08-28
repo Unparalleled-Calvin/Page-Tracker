@@ -152,6 +152,22 @@ chrome.webNavigation.onCompleted.addListener((details => {
         let today = new Date()
         getHistoryByDate(today).then((history) => {
             if (history) {
+                // favIconUrl
+                chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+                    if (tabs.length > 0) {
+                        var activeTab = tabs[0]
+                        if (activeTab.favIconUrl) {
+                            var idx = history.graph.queryNode("url", details.url)
+                            if (idx != -1) {
+                                var node = history.graph.nodes[idx]
+                                node.iconUrl = activeTab.favIconUrl
+                                history.graph.nodes[idx] = node
+                                setHistoryByDate(history, today)
+                            }
+                        }
+                    }
+                })
+
                 // info about caption id isCollected
                 chrome.history.search({ text: '' }, result => {
                     for (var i = 0; i < result.length; i++) {
