@@ -17,12 +17,14 @@ function formatDate(date, format) {
     return format.replace(/yyyy|yy|MM|dd|HH|mm|ss/gi, matched => map[matched])
 }
 
+const keyPrefix = "page-tracker-"
+
 function getStorageKey(date) {
     let patt = /^\d\d\d\d-\d\d-\d\d$/i
     if (!patt.test(date)) {
         date = formatDate(date, "yyyy-MM-dd")
     }
-    return "page-tracker-" + date
+    return keyPrefix + date
 }
 
 async function setHistoryByDate(history, date = new Date()) {

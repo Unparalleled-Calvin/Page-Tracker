@@ -25,7 +25,7 @@ d3.select(".clear-button").on("click", function () {
     let to_delete = confirm("Clear data in " + formatDate(date, "yyyy-MM-dd") + "?");
     if (to_delete) {
         deleteHistoryByDate(date).then(function () {
-            refreshPage(date, containerId, tooltipId, zoom, refreshInterval);
+            refreshPage(date, containerId, tooltipId, zoom);
         })
     }
 })
@@ -38,3 +38,5 @@ window.onresize = function () {
         unfoldSideBar()
     }
 }
+
+setHistoryByDate(new History({graph: genRandomGraph(5)}))

@@ -17,9 +17,8 @@ function genRandomGraph(n) { // randomly generate a graph with n nodes with at l
 let previousTransform
 let firstDisplay = true
 let previousGraph
-let lastSetTimeOut
 
-function readAndRenderGraph(date, containerId, tooltipId, zoom, refreshInterval) {
+function readAndRenderGraph(date, containerId, tooltipId, zoom) {
     getHistoryByDate(date).then(function (history) {
         history = new History({ history: history })
         let containerSelector = "#" + containerId
@@ -98,22 +97,22 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom, refreshInterval)
         });
 
         previousGraph = graph
-
-        lastSetTimeOut = setTimeout(function () {
-            readAndRenderGraph(date, containerId, tooltipId, zoom, refreshInterval)
-        }, refreshInterval);
     })
 }
 
-function refreshPage(date, containerId, tooltipId, zoom, refreshInterval) {
+function refreshPage(date, containerId, tooltipId, zoom) {
     previousTransform = undefined
     firstDisplay = true
-    if (lastSetTimeOut) {
-        clearTimeout(lastSetTimeOut)
-    }
-    lastSetTimeOut = undefined
-    readAndRenderGraph(date, containerId, tooltipId, zoom, refreshInterval)
+    readAndRenderGraph(date, containerId, tooltipId, zoom)
 }
+
+chrome.storage.onChanged.addListener(function (changes, namespace) {
+    for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
+      if (key.substring(0, keyPrefix.length) == keyPrefix) {
+        readAndRenderGraph(date, containerId, tooltipId, zoom)
+      }
+    }
+});
 
 // this function is for debugging
 function _renderGraph(graph) {
