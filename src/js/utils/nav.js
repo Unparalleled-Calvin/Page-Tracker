@@ -24,9 +24,11 @@ d3.select(".toggle-button").on("click", function () {
 d3.select(".clear-button").on("click", function () {
     let to_delete = confirm("Clear data in " + formatDate(date, "yyyy-MM-dd") + "?");
     if (to_delete) {
-        deleteHistoryByDate(date).then(function () {
-            refreshPage(date, containerId, tooltipId, zoom);
-        })
+        chrome.runtime.sendMessage({name: "delete", date: date}, function(response) {
+            if(response.status != "ok") {
+                alert("Failed!")
+            }
+        });
     }
 })
 
