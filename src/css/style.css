@@ -25,7 +25,7 @@ body {
     z-index: 1;
     top: 0px;
     left: 0px;
-    overflow-x: hidden;
+    overflow: hidden;
     transition: 0.5s;
 }
 
@@ -54,10 +54,18 @@ body {
     height: 5%;
     display: flex;
     align-items: center;
+    justify-content: center;
+}
+
+.nav .nav-button-wrapper {
+    width: 95%;
+    height: 80%;
+    display: flex;
+    align-items: center;
     justify-content: space-between;
 }
 
-.nav .nav-button {
+.nav .nav-button-wrapper .nav-button {
     font-size: 15px;
     border-radius: 5px;
     height: 80%;
@@ -70,28 +78,26 @@ body {
     transition: 0.2s ease;
 }
 
-.nav .toggle-button {
+.nav .nav-button-wrapper .toggle-button {
     background-color: rgb(125, 205, 255);
 }
 
-.nav .toggle-button:hover {
+.nav .nav-button-wrapper .toggle-button:hover {
     background-color: rgb(192, 229, 252);
 }
 
-.nav .clear-button {
+.nav .nav-button-wrapper .clear-button {
     background-color: rgb(237, 83, 83);
 }
 
-.nav .clear-button:hover {
+.nav .nav-button-wrapper .clear-button:hover {
     background-color: rgb(241, 139, 139);
 }
 
 .canvas {
     width: 100%;
     height: 95%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative;
     border-radius: 10px;
 }
 
@@ -100,7 +106,11 @@ body {
     border-color: rgb(88, 85, 82);
     background-color: rgb(255, 255, 255);
     overflow: hidden;
-    height: 95%;
+    position: absolute;
+    height: 97%;
     width: 95%;
+    left: 2.5%;
+    right: 2.5%;
+    bottom: 2.105%;
     border-radius: 10px;
 }
