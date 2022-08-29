@@ -16,7 +16,7 @@ function genRandomGraph(n) { // randomly generate a graph with n nodes with at l
 
 let previousTransform
 let firstDisplay = true
-let previousGraphJSON
+let previousGraph
 let lastSetTimeOut
 
 function readAndRenderGraph(date, containerId, tooltipId, zoom, refreshInterval) {
@@ -28,9 +28,8 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom, refreshInterval)
         let render = new dagreD3.render();
 
         let graph = history.graph
-        let graphJSON = JSON.stringify(graph)
 
-        if (graphJSON != previousGraphJSON) {
+        if (previousGraph && !graph.equal(previousGraph) || !previousGraph) {
 
             let g = graph.dagre()
 
@@ -66,39 +65,39 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom, refreshInterval)
                 let svgBox = d3.select(containerSelector).node().getBoundingClientRect()
                 svg.attr("viewBox", "" + (gBox.width - svgBox.width) / 2 + " " + (gBox.height - svgBox.height) / 2 + " " + svgBox.width + " " + svgBox.height) // show svg in center
             }
-
-            d3.selectAll(".node").on("mouseenter", function (id) {
-                d3.selectAll(".node").classed("unfocused", true);
-                d3.selectAll(".edgePath").classed("unfocused", true);
-                d3.selectAll(".node").classed("normal", false);
-                d3.selectAll(".edgePath").classed("normal", false);
-                d3.select(this).classed("focused", true);
-                d3.select(this).classed("unfocused", false);
-
-                d3.select(tooltipSelector)
-                    .html(graph.nodes[id].infoHTML())
-                    .style("top", event.pageY + 20 + "px")
-                    .style("left", event.pageX + 20 + "px")
-            });
-            d3.selectAll(".node").on("mouseleave", function () {
-                d3.selectAll(".node").classed("unfocused", false);
-                d3.selectAll(".edgePath").classed("unfocused", false);
-                d3.selectAll(".node").classed("normal", true);
-                d3.selectAll(".edgePath").classed("normal", true);
-                d3.select(this).classed("focused", false);
-
-                d3.select(tooltipSelector)
-                    .style("top", "-500px")
-                    .style("left", "-500px")
-            });
-            d3.selectAll(".node").on("mousemove", function () {
-                d3.select(tooltipSelector)
-                    .style("top", event.pageY + 20 + "px")
-                    .style("left", event.pageX + 20 + "px")
-            });
         }
 
-        previousGraphJSON = graphJSON
+        d3.selectAll(".node").on("mouseenter", function (id) {
+            d3.selectAll(".node").classed("unfocused", true);
+            d3.selectAll(".edgePath").classed("unfocused", true);
+            d3.selectAll(".node").classed("normal", false);
+            d3.selectAll(".edgePath").classed("normal", false);
+            d3.select(this).classed("focused", true);
+            d3.select(this).classed("unfocused", false);
+
+            d3.select(tooltipSelector)
+                .html(graph.nodes[id].infoHTML())
+                .style("top", event.pageY + 20 + "px")
+                .style("left", event.pageX + 20 + "px")
+        });
+        d3.selectAll(".node").on("mouseleave", function () {
+            d3.selectAll(".node").classed("unfocused", false);
+            d3.selectAll(".edgePath").classed("unfocused", false);
+            d3.selectAll(".node").classed("normal", true);
+            d3.selectAll(".edgePath").classed("normal", true);
+            d3.select(this).classed("focused", false);
+
+            d3.select(tooltipSelector)
+                .style("top", "-500px")
+                .style("left", "-500px")
+        });
+        d3.selectAll(".node").on("mousemove", function () {
+            d3.select(tooltipSelector)
+                .style("top", event.pageY + 20 + "px")
+                .style("left", event.pageX + 20 + "px")
+        });
+
+        previousGraph = graph
 
         lastSetTimeOut = setTimeout(function () {
             readAndRenderGraph(date, containerId, tooltipId, zoom, refreshInterval)

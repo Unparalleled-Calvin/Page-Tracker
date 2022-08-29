@@ -51,4 +51,15 @@ class Node {
             + "type: " + this.type + "<br>"
         return html
     }
+    equal(node) {
+        return this.id == node.id &&
+        this.url == node.url &&
+        this.caption == node.caption &&
+        this.iconUrl == node.iconUrl &&
+        this.isCollected == node.isCollected &&
+        this.type == node.type &&
+        this.highlight == node.highlight &&
+        this.prev.toString() == node.prev.toString() &&
+        this.succ.toString() == node.succ.toString()
+    }
 }

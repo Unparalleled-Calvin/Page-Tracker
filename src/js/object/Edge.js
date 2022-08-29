@@ -19,4 +19,9 @@ class Edge {
         this.src = defaultParams.src
         this.dst = defaultParams.dst
     }
+    equal(edge) {
+        return this.type == edge.type &&
+        this.src == edge.src &&
+        this.dst == edge.dst
+    }
 }

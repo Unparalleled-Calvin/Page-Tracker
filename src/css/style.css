@@ -1,3 +1,7 @@
+body {
+    background-color: rgb(249, 242, 237);
+}
+
 .tooltip {
     border: solid;
     border-width: 2px;
@@ -21,8 +25,7 @@
     z-index: 1;
     top: 0px;
     left: 0px;
-    overflow-x: hidden;
-    background-color: rgb(249, 242, 237);
+    overflow: hidden;
     transition: 0.5s;
 }
 
@@ -30,6 +33,7 @@
     font-size: 30px;
     white-space: nowrap;
     text-align: center;
+    user-select:none;
 }
 
 .sidebar .sidebar-item {
@@ -48,34 +52,65 @@
 
 .nav {
     height: 5%;
-    background-color: rgb(249, 242, 237);
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
-.nav .toggle-button {
+.nav .nav-button-wrapper {
+    width: 95%;
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav .nav-button-wrapper .nav-button {
     font-size: 15px;
     border-radius: 5px;
-    background-color: rgb(125, 205, 255);
     height: 80%;
     width: 10%;
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    user-select:none;
+    transition: 0.2s ease;
+}
+
+.nav .nav-button-wrapper .toggle-button {
+    background-color: rgb(125, 205, 255);
+}
+
+.nav .nav-button-wrapper .toggle-button:hover {
+    background-color: rgb(192, 229, 252);
+}
+
+.nav .nav-button-wrapper .clear-button {
+    background-color: rgb(237, 83, 83);
+}
+
+.nav .nav-button-wrapper .clear-button:hover {
+    background-color: rgb(241, 139, 139);
 }
 
 .canvas {
     width: 100%;
     height: 95%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative;
+    border-radius: 10px;
 }
 
 .canvas .canvas-display {
     border-style: solid;
     border-color: rgb(88, 85, 82);
+    background-color: rgb(255, 255, 255);
     overflow: hidden;
-    height: 95%;
+    position: absolute;
+    height: 97%;
     width: 95%;
+    left: 2.5%;
+    right: 2.5%;
+    bottom: 2.105%;
+    border-radius: 10px;
 }
