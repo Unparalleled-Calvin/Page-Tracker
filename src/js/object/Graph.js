@@ -94,10 +94,14 @@ class Graph {
     }
     toggleSwitch(idx) {
         this.nodes.forEach((node, index) => {
-            if (index == idx) {
-                node.highlight = 1
+            if(node.type == "wasted"){
+                // do nothing
             } else {
-                node.highlight = 0
+                if (index == idx) {
+                    node.type = "highlight"
+                } else {
+                    node.type = "default"
+                }
             }
         })
     }

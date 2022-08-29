@@ -12,7 +12,6 @@ class Node {
             isCollected: 0,
             isCopied: 0,
             type: "default", // default
-            highlight: 0,
             prev: [], // index of edges
             succ: [], // index of edges
         }
@@ -35,7 +34,6 @@ class Node {
         this.isCollected = defaultParams.isCollected
         this.isCopied = defaultParams.isCopied
         this.type = defaultParams.type
-        this.highlight = defaultParams.highlight
         this.prev = defaultParams.prev
         this.succ = defaultParams.succ
     }
@@ -51,7 +49,6 @@ class Node {
             + "isCollected: " + this.isCollected + "<br>"
             + "isCopied: " + this.isCopied + "<br>"
             + "type: " + this.type + "<br>"
-            + "highligt: " + this.highlight + "<br>"
         return html
     }
 }

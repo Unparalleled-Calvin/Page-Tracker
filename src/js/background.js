@@ -116,10 +116,6 @@ chrome.webNavigation.onBeforeNavigate.addListener((details) => {
                 promise = new Promise(function (resolve, reject) {
                     resolve(chrome.tabs.get(tab.openerTabId))
                 })
-                // chrome.tabs.get(tab.openerTabId, (parentTab) => {
-                //     startUrl = parentTab.url
-                //     promise.resolve(startUrl)
-                // })
             } else { // normal cases
                 startUrl = tab.url
             }
@@ -301,6 +297,54 @@ function updateAdditionInfo() {
         }
     })
 }
+
+function checkAbnormalNodes() {
+    let today = new Date()
+    getHistoryByDate(today).then((history) => {
+        if (history) {
+            let arr = history.graph.nodes
+            arr.forEach((node, index) => {
+                if(node.caption == ""){
+                    // native embedded pages
+                    if(node.url.startsWith("chrome://")){
+                        let len = node.url.length
+                        let str = node.url.substring(9, 10).toUpperCase() + node.url.substring(10, len - 1).toLowerCase()
+                        node.caption = str
+                    } else if(node.url.startsWith("edge://")){
+                        let len = node.url.length
+                        let str = node.url.substring(7, 8).toUpperCase() + node.url.substring(8, len - 1).toLowerCase()
+                        node.caption = str
+                    }
+                    // TLD problem
+                    // else if(node.url.startsWith("https://www.google.com")){
+                    //     chrome.history.search({ text: node.url }, result => {
+                    //         if(result.length > 0){
+                    //             // if(checkIfOnlyTldDiff(node.url, result[0].url)){
+                    //             //     merge(node1, node2)
+                    //             // }
+                    //         }
+                    //     })
+                    // }
+                }
+            })
+        }
+    })
+}
+
+// Extract the domain from the url
+// e.g. http://google.com/ -> google.com
+function extractDomain(url) {
+    var re = /:\/\/(www\.)?(.+?)\//;
+    return url.match(re)[2];
+  }
+
+// return true if the only difference between the two urls is TLD
+// function checkIfOnlyTldDiff(url1, url2){
+//     let domain1 = extractDomain(url1)
+//     let domain2 = extractDomain(url2)
+//     console.log(domain1)
+//     console.log(domain2)
+// }
 
 // click extension icon
 chrome.action.onClicked.addListener((tab) => {
