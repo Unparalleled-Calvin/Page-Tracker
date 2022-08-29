@@ -26,34 +26,38 @@ class Graph {
             })
             .setDefaultEdgeLabel(function () { return {}; });
         this.nodes.forEach((node, index) => {
-            let labelLimit = 20
-            let label
-            if (node.caption) {
-                label = node.caption.substring(0, labelLimit) + (node.caption.length > labelLimit ? "..." : "")
-            }
-            else if (node.url) {
-                label = node.url.substring(0, labelLimit) + (node.url.length > labelLimit ? "..." : "")
-            }
-            else {
-                label = String(node.id)
-            }
-            let hrefTag = "<a href=" + node.url + " target=_blank>" + label + "</a>"
-            let imgTag = node.iconUrl ? "<img src=\"" + node.iconUrl + "\" width=\"16px\" height=\"16px\">" : ""
-            g.setNode(index, {
-                labelType: "html",
-                label: imgTag + hrefTag,
-                class: node.type
-            })
-            if (!node.prev.length && index) {
-                g.setEdge(0, index, {
-                    class: "default",
+            if (node.type != "wasted") {
+                let labelLimit = 20
+                let label
+                if (node.caption) {
+                    label = node.caption.substring(0, labelLimit) + (node.caption.length > labelLimit ? "..." : "")
+                }
+                else if (node.url) {
+                    label = node.url.substring(0, labelLimit) + (node.url.length > labelLimit ? "..." : "")
+                }
+                else {
+                    label = String(node.id)
+                }
+                let hrefTag = "<a href=" + node.url + " target=_blank>" + label + "</a>"
+                let imgTag = node.iconUrl ? "<img src=\"" + node.iconUrl + "\" width=\"16px\" height=\"16px\">" : ""
+                g.setNode(index, {
+                    labelType: "html",
+                    label: imgTag + hrefTag,
+                    class: node.type
                 })
+                if (!node.prev.length && index) {
+                    g.setEdge(0, index, {
+                        class: "default",
+                    })
+                }
             }
         })
         this.edges.forEach((edge, index) => {
-            g.setEdge(edge.src, edge.dst, {
-                class: edge.type,
-            })
+            if (edge.type != "wasted") {
+                g.setEdge(edge.src, edge.dst, {
+                    class: edge.type,
+                })
+            }
         })
 
         g.nodes().forEach(function (v) {
@@ -66,7 +70,7 @@ class Graph {
     queryNode(field, value) { // query the node index by sepcific field e.g. queryNode("url", "https://www.example.com"). returns index if found, -1 otherwise
         let idx = -1
         this.nodes.forEach((node, index) => {
-            if (node[field] == value) {
+            if (node[field] == value && node.type != "wasted") {
                 idx = index
                 return
             }
@@ -77,7 +81,7 @@ class Graph {
         let idx = -1
         for (let index = 0; index < this.edges.length; index++) {
             let edge = this.edges[index]
-            if (edge.src == src && edge.dst == dst) {
+            if (edge.src == src && edge.dst == dst && edge.type != "wasted") {
                 idx = index
                 return
             }
@@ -114,16 +118,41 @@ class Graph {
         if (this.edges.length != graph.edges.length) {
             return false
         }
-        for (let i=0; i<this.nodes.length; i++) {
+        for (let i = 0; i < this.nodes.length; i++) {
             if (!this.nodes[i].equal(graph.nodes[i])) {
                 return false
             }
         }
-        for (let i=0; i<this.edges.length; i++) {
+        for (let i = 0; i < this.edges.length; i++) {
             if (!this.edges[i].equal(graph.edges[i])) {
                 return false
             }
         }
         return true
+    }
+    mergeNode(index1, index2) { // merge node1 into node2
+        let node1 = this.nodes[index1]
+        let node2 = this.nodes[index2]
+        node1.type = "wasted"
+        node1.prev.forEach((edgeIndex, index) => {
+            let edge = this.edges[edgeIndex]
+            if (this.queryEdge(edge.src, index2) != -1 || edge.src == index2) { // exists edge from prev to node2
+                edge.type = "wasted"
+            }
+            else {
+                edge.dst = index2
+                node2.prev.push(edgeIndex)
+            }
+        })
+        node1.succ.forEach((edgeIndex, index) => {
+            let edge = this.edges[edgeIndex]
+            if (this.queryEdge(index2, edge.dst) != -1 || edge.dst == index2) { // exists edge from node2 to dst
+                edge.type = "wasted"
+            }
+            else {
+                edge.src = index2
+                node2.succ.push(edgeIndex)
+            }
+        })
     }
 }

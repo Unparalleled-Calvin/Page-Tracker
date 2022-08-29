@@ -114,3 +114,36 @@ function refreshPage(date, containerId, tooltipId, zoom, refreshInterval) {
     lastSetTimeOut = undefined
     readAndRenderGraph(date, containerId, tooltipId, zoom, refreshInterval)
 }
+
+// this function is for debugging
+function _renderGraph(graph) {
+    let containerSelector = "#" + containerId
+    let g = graph.dagre()
+
+    let render = new dagreD3.render();
+    let svg = d3
+        .select(containerSelector)
+        .html("<g></g>")
+        .attr("width", "100%")
+        .attr("height", "100%")
+    render(d3.select(containerSelector + " g"), g);
+    let svgGroup = d3.select(containerSelector + " g")
+    zoom.on("zoom", function () {
+        previousTransform = d3.event.transform
+        svgGroup.attr("transform", d3.event.transform);
+    });
+    let transform
+    if (previousTransform) {
+        transform = d3.zoomIdentity
+            .scale(previousTransform.k)
+            .translate(
+                previousTransform.x / previousTransform.k,
+                previousTransform.y / previousTransform.k
+            )
+    }
+    else {
+        transform = d3.zoomIdentity
+    }
+    svg.call(zoom.transform, transform);
+    svg.call(zoom);
+}
