@@ -27,22 +27,23 @@ class Graph {
             .setDefaultEdgeLabel(function () { return {}; });
         this.nodes.forEach((node, index) => {
             if (node.type != "wasted") {
-                let labelLimit = 20
-                let label
+                let captionLimit = 20
+                let caption
                 if (node.caption) {
-                    label = node.caption.substring(0, labelLimit) + (node.caption.length > labelLimit ? "..." : "")
+                    caption = node.caption.substring(0, captionLimit) + (node.caption.length > captionLimit ? "..." : "")
                 }
                 else if (node.url) {
-                    label = node.url.substring(0, labelLimit) + (node.url.length > labelLimit ? "..." : "")
+                    caption = node.url.substring(0, captionLimit) + (node.url.length > captionLimit ? "..." : "")
                 }
                 else {
-                    label = String(node.id)
+                    caption = String(node.id)
                 }
-                let hrefTag = "<a href=" + node.url + " target=_blank>" + label + "</a>"
+                let hrefTag = "<a href=" + node.url + " target=_blank>" + caption + "</a>"
                 let imgTag = node.iconUrl ? "<img src=\"" + node.iconUrl + "\" width=\"16px\" height=\"16px\">" : ""
+                let label = "<div style=\"display: flex; align-items: center;\">" + imgTag + hrefTag + "</div>"
                 g.setNode(index, {
                     labelType: "html",
-                    label: imgTag + hrefTag,
+                    label: label,
                     class: node.type
                 })
                 if (!node.prev.length && index) {
