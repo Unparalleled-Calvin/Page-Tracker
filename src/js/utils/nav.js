@@ -40,5 +40,3 @@ window.onresize = function () {
         unfoldSideBar()
     }
 }
-
-setHistoryByDate(new History({graph: genRandomGraph(5)}))

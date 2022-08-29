@@ -70,7 +70,7 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom) {
                 centerSvgAroundElement(
                     d3.select(containerSelector),
                     d3.select(containerSelector + " g"),
-                    d3.select(".node.highlight") ? d3.select(".node.highlight") : d3.select(".node")
+                    d3.select(".node.highlight").node() ? d3.select(".node.highlight") : d3.select(".node")
                 )
             
             }

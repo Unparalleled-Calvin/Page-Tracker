@@ -19,21 +19,32 @@ body {
 }
 
 .sidebar {
-    height: 100%;
     width: 25%;
+    height: 100%;
     position: fixed;
     z-index: 1;
     top: 0px;
     left: 0px;
+    border: rgb(201, 184, 171);
+    border-width: 0 2px 0 0;
+    border-style: dotted;
     overflow: hidden;
     transition: 0.5s;
 }
 
 .sidebar .sidebar-header {
+    height: 10%;
     font-size: 30px;
+    min-height: 60px;
     white-space: nowrap;
     text-align: center;
     user-select:none;
+    border: rgb(201, 184, 171);
+    border-width: 0 0 2px 0;
+    border-style: dotted;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .sidebar .sidebar-item {
