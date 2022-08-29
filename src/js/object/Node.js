@@ -58,7 +58,6 @@ class Node {
         this.iconUrl == node.iconUrl &&
         this.isCollected == node.isCollected &&
         this.type == node.type &&
-        this.highlight == node.highlight &&
         this.prev.toString() == node.prev.toString() &&
         this.succ.toString() == node.succ.toString()
     }
