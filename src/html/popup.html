@@ -23,7 +23,7 @@
                 <button class="btn" id="nextMonth">&gt;</button>
             </div>
             <div class="calendar-table" id="calendar-table"></div>
-            <div class="calendar-input" id="date-search" onsubmit="return setDate(this)">
+            <div class="calendar-input" id="date-search">
                 <input type="date" class="text-field" name="date" id="date" required>
                 <button id="date-submit" class="btn">Go</button>
             </div>
@@ -36,7 +36,8 @@
     </div>
     <div class="content">
         <div class="nav">
-            <div class="toggle-button active">Sidebar</div>
+            <div class="nav-button toggle-button active">Sidebar</div>
+            <div class="nav-button clear-button">Clear</div>
         </div>
         <div class="canvas">
             <div class="canvas-display">
@@ -57,9 +58,10 @@
 <script src="../js/object/Node.js"></script>
 <script src="../js/object/Edge.js"></script>
 <script src="../js/popup.js"></script>
-<script src="../js/utils/graph.js"></script>
 <script src="../js/utils/utils.js"></script>
+<script src="../js/utils/graph.js"></script>
 <script src="../js/utils/calendar.js"></script>
+<script src="../js/utils/nav.js"></script>
 <script src="../js/test/constructor.js"></script>
 
 </html>

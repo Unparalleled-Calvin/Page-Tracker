@@ -63,6 +63,22 @@
 }
 
 /* Calendar */
+.calendar {
+    height: 40%;
+    margin-left: 2%;
+    margin-right: 2%;
+    width: 96%;
+    border-radius: 18px;
+    background: #ffffff;
+    user-select: none;
+    position: absolute;
+    bottom: 2%;
+}
+
+#calendar {
+    width: 100%;
+}
+
 .calendar-header {
     display: flex;
     justify-content: space-between;
@@ -98,18 +114,6 @@
     bottom: 5%;
 }
 
-.calendar {
-    height: 40%;
-    margin-left: 2%;
-    margin-right: 2%;
-    width: 96%;
-    border-radius: 18px;
-    background: #ffffff;
-    user-select: none;
-    position: absolute;
-    bottom: 2%;
-}
-
 .month {
     display: inline;
     display: flex;
@@ -117,10 +121,6 @@
     align-items: center;
     width: 30%;
     font-size: 0.7em;
-}
-
-#calendar {
-    width: 100%;
 }
 
 .weekends th {
