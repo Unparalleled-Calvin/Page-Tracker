@@ -74,17 +74,19 @@ chrome.tabs.onActivated.addListener(() => {
             if (history) {
                 currIdx = history.graph.queryNode("url", value)
             } else {
-                // create a new history instance
-                let newHistory = new History()
-                let newNode = new Node({
-                    url: value,
-                    caption: activeTab.title,
-                    iconUrl: activeTab.favIconUrl
-                })
-                currIdx = newHistory.graph.addNode(newNode)
-                newNode.id = currIdx
-                newHistory.graph.addEdge(new Edge({ src: 0, dst: currIdx }))
-                history = newHistory
+                if (value != "chrome-extension://ncoghmmackffejpkffmbdccboabngmme/html/popup.html") {
+                    // create a new history instance
+                    let newHistory = new History()
+                    let newNode = new Node({
+                        url: value,
+                        caption: activeTab.title,
+                        iconUrl: activeTab.favIconUrl
+                    })
+                    currIdx = newHistory.graph.addNode(newNode)
+                    newNode.id = currIdx
+                    newHistory.graph.addEdge(new Edge({ src: 0, dst: currIdx }))
+                    history = newHistory
+                }
             }
 
             // 2. change the highlight status
@@ -204,20 +206,24 @@ function handleNavigation(startUrl, endUrl) {
             // 1.1 find the currentNode
             currIdx = history.graph.queryNode("url", startUrl)
             if (currIdx == -1) {
-                let newNode = new Node({ //TODO: need more info
-                    id: history.graph.nodes.length,
-                    url: startUrl
-                })
-                currIdx = history.graph.addNode(newNode)
+                if (startUrl != "chrome-extension://ncoghmmackffejpkffmbdccboabngmme/html/popup.html") {
+                    let newNode = new Node({ //TODO: need more info
+                        id: history.graph.nodes.length,
+                        url: startUrl
+                    })
+                    currIdx = history.graph.addNode(newNode)
+                }
             }
             // 1.2 find the targetNode(or create one)
             targetIdx = history.graph.queryNode("url", endUrl)
             if (targetIdx == -1) {
-                let newNode = new Node({ //TODO: need more info
-                    id: history.graph.nodes.length,
-                    url: endUrl
-                })
-                targetIdx = history.graph.addNode(newNode)
+                if (endUrl != "chrome-extension://ncoghmmackffejpkffmbdccboabngmme/html/popup.html") {
+                    let newNode = new Node({ //TODO: need more info
+                        id: history.graph.nodes.length,
+                        url: endUrl
+                    })
+                    targetIdx = history.graph.addNode(newNode)
+                }
             }
             // console.log(currIdx)
             // console.log(targetIdx)
@@ -234,15 +240,17 @@ function handleNavigation(startUrl, endUrl) {
             // may not go into this branch (extreme case: this event happens at in a new day without a previous tab change)
 
             // create a new history instance
-            let newHistory = new History()
-            let newNode = new Node({ //TODO: need more info
-                id: history.graph.nodes.length,
-                url: endUrl
-            })
-            currIdx = newHistory.graph.addNode(newNode)
-            targetIdx = currIdx
-            newHistory.graph.addEdge(new Edge({ src: 0, dst: currIdx }))
-            history = newHistory
+            if (endUrl != "chrome-extension://ncoghmmackffejpkffmbdccboabngmme/html/popup.html") {
+                let newHistory = new History()
+                let newNode = new Node({ //TODO: need more info
+                    id: history.graph.nodes.length,
+                    url: endUrl
+                })
+                currIdx = newHistory.graph.addNode(newNode)
+                targetIdx = currIdx
+                newHistory.graph.addEdge(new Edge({ src: 0, dst: currIdx }))
+                history = newHistory
+            }
         }
 
         console.log(targetIdx)
@@ -320,7 +328,7 @@ function checkAbnormalNodes() {
                             if (result.length > 0) {
                                 if (checkIfOnlyTldDiff(node.url, result[0].url)) {
                                     let idx = history.graph.queryNode("url", result[0].url)
-                                    if(history.graph.nodes[index] != null && history.graph.nodes[idx] != null){
+                                    if (history.graph.nodes[index] != null && history.graph.nodes[idx] != null) {
                                         history.graph.nodes = history.graph.mergeNode(index, idx)
                                     }
                                     setHistoryByDate(history, today)
