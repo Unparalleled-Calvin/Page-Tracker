@@ -154,5 +154,6 @@ class Graph {
                 node2.succ.push(edgeIndex)
             }
         })
+        return this.nodes
     }
 }

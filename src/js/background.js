@@ -296,6 +296,7 @@ function updateAdditionInfo() {
             })
         }
     })
+    checkAbnormalNodes()
 }
 
 function checkAbnormalNodes() {
@@ -304,29 +305,33 @@ function checkAbnormalNodes() {
         if (history) {
             let arr = history.graph.nodes
             arr.forEach((node, index) => {
-                if(node.caption == ""){
+                if (node.type != "wasted" && node.caption == "") {
                     // native embedded pages
-                    if(node.url.startsWith("chrome://")){
+                    if (node.url.startsWith("chrome://")) {
                         let len = node.url.length
                         let str = node.url.substring(9, 10).toUpperCase() + node.url.substring(10, len - 1).toLowerCase()
                         node.caption = str
-                    } else if(node.url.startsWith("edge://")){
+                    } else if (node.url.startsWith("edge://")) {
                         let len = node.url.length
                         let str = node.url.substring(7, 8).toUpperCase() + node.url.substring(8, len - 1).toLowerCase()
                         node.caption = str
+                    } else if (node.url.startsWith("https://www.google.com")) {
+                        chrome.history.search({ text: node.url }, result => {
+                            if (result.length > 0) {
+                                if (checkIfOnlyTldDiff(node.url, result[0].url)) {
+                                    let idx = history.graph.queryNode("url", result[0].url)
+                                    if(history.graph.nodes[index] != null && history.graph.nodes[idx] != null){
+                                        history.graph.nodes = history.graph.mergeNode(index, idx)
+                                    }
+                                    setHistoryByDate(history, today)
+                                }
+                            }
+                        })
                     }
-                    // TLD problem
-                    // else if(node.url.startsWith("https://www.google.com")){
-                    //     chrome.history.search({ text: node.url }, result => {
-                    //         if(result.length > 0){
-                    //             // if(checkIfOnlyTldDiff(node.url, result[0].url)){
-                    //             //     merge(node1, node2)
-                    //             // }
-                    //         }
-                    //     })
-                    // }
                 }
             })
+            history.graph.nodes = arr
+            setHistoryByDate(history, today)
         }
     })
 }
@@ -336,15 +341,20 @@ function checkAbnormalNodes() {
 function extractDomain(url) {
     var re = /:\/\/(www\.)?(.+?)\//;
     return url.match(re)[2];
-  }
+}
 
-// return true if the only difference between the two urls is TLD
-// function checkIfOnlyTldDiff(url1, url2){
-//     let domain1 = extractDomain(url1)
-//     let domain2 = extractDomain(url2)
-//     console.log(domain1)
-//     console.log(domain2)
-// }
+// Return true if URL2 has a higher level of top-level domain name than URL1
+function checkIfOnlyTldDiff(url1, url2) {
+    let domain1 = extractDomain(url1)
+    let domain2 = extractDomain(url2)
+    let temp2 = domain2.substring(0, domain2.lastIndexOf("."))
+    let temp2a = domain2.substring(domain2.lastIndexOf(".") + 1)
+    // support Chinese HK China USA and Singapore
+    if (domain1 == temp2 && (temp2a == "hk" || temp2a == "cn" || temp2a == "us" || temp2a == "sg")) {
+        return true
+    }
+    return false
+}
 
 // click extension icon
 chrome.action.onClicked.addListener((tab) => {
