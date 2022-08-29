@@ -14,6 +14,13 @@ function genRandomGraph(n) { // randomly generate a graph with n nodes with at l
     return graph
 }
 
+function centerSvgAroundElement(svg, g, node) {
+    let gBox = g.node().getBoundingClientRect()
+    let svgBox = svg.node().getBoundingClientRect()
+    let nodeBox = node.node().getBoundingClientRect()
+    svg.attr("viewBox", "" + (nodeBox.x + nodeBox.width / 2 - gBox.x - svgBox.width / 2) + " " + (nodeBox.y + nodeBox.height / 2 - gBox.y - svgBox.height / 2) + " " + svgBox.width + " " + svgBox.height)
+}
+
 let previousTransform
 let firstDisplay = true
 let previousGraph
@@ -60,9 +67,12 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom) {
 
             if (firstDisplay) {
                 firstDisplay = false
-                let gBox = d3.select(containerSelector + " g").node().getBoundingClientRect()
-                let svgBox = d3.select(containerSelector).node().getBoundingClientRect()
-                svg.attr("viewBox", "" + (gBox.width - svgBox.width) / 2 + " " + (gBox.height - svgBox.height) / 2 + " " + svgBox.width + " " + svgBox.height) // show svg in center
+                centerSvgAroundElement(
+                    d3.select(containerSelector),
+                    d3.select(containerSelector + " g"),
+                    d3.select(".node.highlight") ? d3.select(".node.highlight") : d3.select(".node")
+                )
+            
             }
         }
 
