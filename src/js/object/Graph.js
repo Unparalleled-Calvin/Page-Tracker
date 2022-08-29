@@ -101,4 +101,23 @@ class Graph {
             }
         })
     }
+    equal(graph) {
+        if (this.nodes.length != graph.nodes.length) {
+            return false
+        }
+        if (this.edges.length != graph.edges.length) {
+            return false
+        }
+        for (let i=0; i<this.nodes.length; i++) {
+            if (!this.nodes[i].equal(graph.nodes[i])) {
+                return false
+            }
+        }
+        for (let i=0; i<this.edges.length; i++) {
+            if (!this.edges[i].equal(graph.edges[i])) {
+                return false
+            }
+        }
+        return true
+    }
 }
