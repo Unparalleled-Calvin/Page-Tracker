@@ -74,7 +74,7 @@ chrome.tabs.onActivated.addListener(() => {
             if (history) {
                 currIdx = history.graph.queryNode("url", value)
             } else {
-                if (value != "chrome-extension://ncoghmmackffejpkffmbdccboabngmme/html/popup.html") {
+                if (!value.startsWith("chrome-extension://")) {
                     // create a new history instance
                     let newHistory = new History()
                     let newNode = new Node({
@@ -206,7 +206,7 @@ function handleNavigation(startUrl, endUrl) {
             // 1.1 find the currentNode
             currIdx = history.graph.queryNode("url", startUrl)
             if (currIdx == -1) {
-                if (startUrl != "chrome-extension://ncoghmmackffejpkffmbdccboabngmme/html/popup.html") {
+                if (!startUrl.startsWith("chrome-extension://")) {
                     let newNode = new Node({ //TODO: need more info
                         id: history.graph.nodes.length,
                         url: startUrl
@@ -217,7 +217,7 @@ function handleNavigation(startUrl, endUrl) {
             // 1.2 find the targetNode(or create one)
             targetIdx = history.graph.queryNode("url", endUrl)
             if (targetIdx == -1) {
-                if (endUrl != "chrome-extension://ncoghmmackffejpkffmbdccboabngmme/html/popup.html") {
+                if (!endUrl.startsWith("chrome-extension://")) {
                     let newNode = new Node({ //TODO: need more info
                         id: history.graph.nodes.length,
                         url: endUrl
@@ -240,7 +240,7 @@ function handleNavigation(startUrl, endUrl) {
             // may not go into this branch (extreme case: this event happens at in a new day without a previous tab change)
 
             // create a new history instance
-            if (endUrl != "chrome-extension://ncoghmmackffejpkffmbdccboabngmme/html/popup.html") {
+            if (!endUrl.startsWith("chrome-extension://")) {
                 let newHistory = new History()
                 let newNode = new Node({ //TODO: need more info
                     id: history.graph.nodes.length,
@@ -335,6 +335,8 @@ function checkAbnormalNodes() {
                                 }
                             }
                         })
+                    } else if (node.id == "root"){
+                        // merge
                     }
                 }
             })
