@@ -37,9 +37,11 @@ class Graph {
             else {
                 label = String(node.id)
             }
+            let hrefTag = "<a href=" + node.url + " target=_blank>" + label + "</a>"
+            let imgTag = node.iconUrl ? "<img src=\"" + node.iconUrl + "\" width=\"16px\" height=\"16px\">" : ""
             g.setNode(index, {
                 labelType: "html",
-                label: "<a href=" + node.url + " target=_blank>" + label + "</a>",
+                label: imgTag + hrefTag,
                 class: node.type
             })
             if (!node.prev.length && index) {
