@@ -25,17 +25,44 @@
     transition: all 0.3s;
 }
 
-.node.default a:link {
+.node.highlight rect {
+    stroke: rgb(255, 111, 111);
+    stroke-width: 2px;
+    fill: rgb(255, 255, 255);
+}
+
+.node.highlight.normal rect {
+    stroke: rgb(255, 111, 111);
+    stroke-width: 2px;
+    fill: rgb(255, 255, 255);
+    transition: all 0.3s;
+}
+
+.node.highlight.focused rect {
+    stroke: rgb(248, 43, 43);
+    stroke-width: 2.5px;
+    fill: rgb(248, 215, 215);
+    transition: all 0.3s;
+}
+
+.node.highlight.unfocused rect {
+    stroke: rgb(253, 172, 172);
+    stroke-width: 1.5px;
+    fill: rgb(255, 255, 255);
+    transition: all 0.3s;
+}
+
+.node a:link {
     color: #000000;
     text-decoration: none;
 }
 
-.node.default a:visited {
+.node a:visited {
     color: #000000;
     text-decoration: none;
 }
 
-.node.default a:hover {
+.node a:hover {
     color: #000000;
     text-decoration: none;
 }
