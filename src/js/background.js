@@ -12,6 +12,7 @@ try {
 }
 
 let refreshInterval = 3
+
 /**
  * history listener "replenish the nodes' content"
  */
@@ -50,6 +51,13 @@ chrome.history.onVisited.addListener((result) => {
 //     console.log(result)
 // })
 
+chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+    if(request.name == "delete"){
+        let key = getStorageKey(request.date)
+        let result = await chrome.storage.local.remove([key])
+        sendResponse({status: 'ok'})
+    }
+})
 
 /**
  * tab listener

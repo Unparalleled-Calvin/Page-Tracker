@@ -24,7 +24,7 @@ d3.select(".toggle-button").on("click", function () {
 d3.select(".clear-button").on("click", function () {
     let to_delete = confirm("Clear data in " + formatDate(date, "yyyy-MM-dd") + "?");
     if (to_delete) {
-        chrome.runtime.sendMessage({name: "delete", date: date}, function(response) {
+        chrome.runtime.sendMessage({name: "delete", date: formatDate(date, "yyyy-MM-dd")}, function(response) {
             if(response.status != "ok") {
                 alert("Failed!")
             }
