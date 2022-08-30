@@ -343,13 +343,14 @@ function checkAbnormalNodes() {
                                 }
                             }
                         })
-                    } else if(node.id == "root"){
-                        let idx = history.graph.queryNode("caption", "Newtab")
-                        if (history.graph.nodes[index] != null && history.graph.nodes[idx] != null) {
-                            history.graph.nodes = history.graph.mergeNode(index, idx)
-                        }
-                        setHistoryByDate(history, today)
                     }
+                }
+                if(node.type != "wasted" && node.url.endsWith("://newtab/")){
+                    let idx = history.graph.queryNode("id", "root")
+                    if (history.graph.nodes[index] != null && history.graph.nodes[idx] != null) {
+                        history.graph.nodes = history.graph.mergeNode(index, idx)
+                    }
+                    setHistoryByDate(history, today)
                 }
                 // else if (node.type != "wasted" && node.caption.startsWith("https://www.bing.com/ck/")) {
                 //     let idx = history.graph.queryNode("url", node.caption)
