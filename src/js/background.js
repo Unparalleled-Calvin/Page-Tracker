@@ -52,10 +52,10 @@ chrome.history.onVisited.addListener((result) => {
 // })
 
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
-    if(request.name == "delete"){
+    if (request.name == "delete") {
         let key = getStorageKey(request.date)
         let result = await chrome.storage.local.remove([key])
-        sendResponse({status: 'ok'})
+        sendResponse({ status: 'ok' })
     }
 })
 
@@ -343,10 +343,24 @@ function checkAbnormalNodes() {
                                 }
                             }
                         })
-                    } else if (node.id == "root"){
-                        // merge
+                    } else if(node.id == "root"){
+                        let idx = history.graph.queryNode("caption", "Newtab")
+                        if (history.graph.nodes[index] != null && history.graph.nodes[idx] != null) {
+                            history.graph.nodes = history.graph.mergeNode(index, idx)
+                        }
+                        setHistoryByDate(history, today)
                     }
                 }
+                // else if (node.type != "wasted" && node.caption.startsWith("https://www.bing.com/ck/")) {
+                //     let idx = history.graph.queryNode("url", node.caption)
+                //     let searchItem = history.graph.nodes[index].url
+                //     if (history.graph.nodes[index] != null && history.graph.nodes[idx] != null) {
+                //         let str = searchItem.substring(searchItem.indexOf('?q=') + 3, searchItem.indexOf('&'))
+                //         // history.graph.nodes[idx].caption = str
+                //         // history.graph.nodes[index].caption = str
+                //     }
+                //     setHistoryByDate(history, today)
+                // }
             })
             history.graph.nodes = arr
             setHistoryByDate(history, today)
