@@ -34,6 +34,12 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom) {
         let render = new dagreD3.render();
 
         let graph = history.graph
+        
+        if(formatDate(date, "yyyy-MM-dd") != formatDate(new Date(), "yyyy-MM-dd")) {
+            graph.nodes.forEach((node, index) => {
+                node.type = "default"
+            })
+        }
 
         if (previousGraph && !graph.equal(previousGraph) || !previousGraph) {
 
@@ -72,7 +78,6 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom) {
                     d3.select(containerSelector + " g"),
                     d3.select(".node.highlight").node() ? d3.select(".node.highlight") : d3.select(".node")
                 )
-            
             }
         }
 

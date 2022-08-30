@@ -51,6 +51,20 @@ body {
     font-size: 15px;
 }
 
+.sidebar .sidebar-calendar {
+    height: 44%;
+    width: 100%;
+    min-height: 250px;
+    position: absolute;
+    bottom: 0%;
+    border: rgb(201, 184, 171);
+    border-width: 2px 0 0 0;
+    border-style: dotted;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .content {
     transition: 0.5s;
     position: absolute;

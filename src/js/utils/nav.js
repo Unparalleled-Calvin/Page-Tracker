@@ -33,7 +33,7 @@ d3.select(".clear-button").on("click", function () {
 })
 
 window.onresize = function () {
-    if (window.innerWidth < 800 || window.innerHeight < 300) {
+    if (window.innerWidth < 800 || window.innerHeight < 350) {
         foldSideBar()
     }
     else {

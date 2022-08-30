@@ -64,16 +64,12 @@
 
 /* Calendar */
 .calendar {
-    height: 40%;
-    min-height: 250px;
-    margin-left: 2%;
-    margin-right: 2%;
+    height: 91%;
     width: 96%;
     border-radius: 18px;
     background: #ffffff;
     user-select: none;
     position: absolute;
-    bottom: 2%;
 }
 
 #calendar {
