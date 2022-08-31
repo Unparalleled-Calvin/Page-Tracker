@@ -52,6 +52,10 @@
     transition: all 0.3s;
 }
 
+.node a {
+    display: block;
+}
+
 .node a:link {
     color: #000000;
     text-decoration: none;

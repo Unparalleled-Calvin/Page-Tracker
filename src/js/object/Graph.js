@@ -20,6 +20,66 @@ class Graph {
         this.edges = defaultParams.edges
     }
     dagre() {
+        function genHrefTag(node, captionLimit) {
+            let caption, hrefTag
+            if (node.caption) {
+                caption = node.caption
+            }
+            else if (node.url) {
+                caption = node.url
+            }
+            else {
+                caption = String(node.id)
+            }
+            if (caption.length > captionLimit) {
+                let letterPattern = new RegExp("[A-Za-z]"); let firstLine = caption.substring(0, captionLimit)
+                let cut1 = 1, cnt = 0, i
+                for (i = 0; i < caption.length; i++) {
+                    if (caption.charCodeAt(i) > 255)
+                        cnt += 2
+                    else
+                        cnt += 1
+                    if (cnt >= captionLimit) {
+                        cut1 = i
+                        break
+                    }
+                }
+                while (cut1 > 1 && letterPattern.test(firstLine.charAt(cut1 - 1)))
+                    cut1--
+                if (cut1 == 1)
+                    cut1 = i
+                firstLine = caption.substring(0, cut1)
+                let cut2 = caption.length
+                cnt = 0
+                for (; i < caption.length; i++) {
+                    if (caption.charCodeAt(i) > 255)
+                        cnt += 2
+                    else
+                        cnt += 1
+                    if (cnt >= captionLimit) {
+                        cut2 = i
+                        break
+                    }
+                }
+                while (cut2 > cut1 + 1 && letterPattern.test(firstLine.charAt(cut2 - 1)))
+                    cut2--
+                if (cut2 == cut1 + 1)
+                    cut2 = i
+                let secondLine = caption.substring(cut1, cut2) + (cut2 < caption.length ? "..." : "")
+                hrefTag =
+                    "<div style=\"margin-left: 2px;\">" +
+                    "<a href=" + node.url + " target=_blank>" + firstLine + "</a>" +
+                    "<a href=" + node.url + " target=_blank>" + secondLine + "</a>" +
+                    "</div>"
+            }
+            else {
+                hrefTag =
+                    "<div style=\"margin-left: 2px;\">" +
+                    "<a href=" + node.url + " target=_blank>" + caption + "</a>"
+                "</div>"
+            }
+            return hrefTag
+        }
         let g = new dagreD3.graphlib.Graph()
             .setGraph({
                 rankdir: 'LR'
@@ -27,20 +87,9 @@ class Graph {
             .setDefaultEdgeLabel(function () { return {}; });
         this.nodes.forEach((node, index) => {
             if (node.type != "wasted") {
-                let captionLimit = 20
-                let caption
-                if (node.caption) {
-                    caption = node.caption.substring(0, captionLimit) + (node.caption.length > captionLimit ? "..." : "")
-                }
-                else if (node.url) {
-                    caption = node.url.substring(0, captionLimit) + (node.url.length > captionLimit ? "..." : "")
-                }
-                else {
-                    caption = String(node.id)
-                }
-                let hrefTag = "<a href=" + node.url + " target=_blank>" + caption + "</a>"
-                let imgTag = node.iconUrl ? "<img src=\"" + node.iconUrl + "\" width=\"16px\" height=\"16px\">" : ""
-                let label = "<div style=\"display: flex; align-items: center;\">" + imgTag + hrefTag + "</div>"
+                let hrefTag = genHrefTag(node, 30)
+                let imgTag = node.iconUrl ? "<img src=\"" + node.iconUrl + "\" width=\"32px\" height=\"32px\">" : ""
+                let label = "<div style=\"display: flex; align-items: center; justify-content: center; min-height: 32px; min-width: 32px;\">" + imgTag + hrefTag + "</div>"
                 g.setNode(index, {
                     labelType: "html",
                     label: label,
@@ -101,7 +150,7 @@ class Graph {
     }
     toggleSwitch(idx) {
         this.nodes.forEach((node, index) => {
-            if(node.type == "wasted"){
+            if (node.type == "wasted") {
                 // do nothing
             } else {
                 if (index == idx) {
