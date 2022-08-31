@@ -101,6 +101,8 @@
     height: 10%;
     margin-top: 2%;
     margin-bottom: 2%;
+    position: absolute;
+    bottom: 14%;
     align-items: center;
     justify-content: center;
 }
@@ -149,4 +151,8 @@
     align-items: center;
     text-align: center;
     z-index: 1;
+}
+
+#date-submit {
+    width: 32%;
 }
