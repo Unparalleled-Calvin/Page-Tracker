@@ -343,8 +343,15 @@ function checkAbnormalNodes() {
                                 }
                             }
                         })
-                    }
+                    } /*else if(node.url.startsWith("https://www.bing.com/ck/")){
+                        let idx = history.graph.queryNode("caption", node.url)
+                        if (history.graph.nodes[index] != null && history.graph.nodes[idx] != null) {
+                            history.graph.nodes = history.graph.mergeNode(idx, index)
+                        }
+                        setHistoryByDate(history, today)
+                    }*/
                 }
+                // merge new tab into root (compatible to edge and chrome)
                 if(node.type != "wasted" && node.url.endsWith("://newtab/")){
                     let idx = history.graph.queryNode("id", "root")
                     if (history.graph.nodes[index] != null && history.graph.nodes[idx] != null) {

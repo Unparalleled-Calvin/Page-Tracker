@@ -26,21 +26,21 @@ body {
     top: 0px;
     left: 0px;
     border: rgb(201, 184, 171);
-    border-width: 0 2px 0 0;
+    border-width: 0 4px 0 0;
     border-style: dotted;
     overflow: hidden;
     transition: 0.5s;
 }
 
 .sidebar .sidebar-header {
-    height: 10%;
+    height: 6.6%;
     font-size: 30px;
     min-height: 60px;
     white-space: nowrap;
     text-align: center;
-    user-select:none;
+    user-select: none;
     border: rgb(201, 184, 171);
-    border-width: 0 0 2px 0;
+    border-width: 0 0 4px 0;
     border-style: dotted;
     display: flex;
     align-items: center;
@@ -52,13 +52,13 @@ body {
 }
 
 .sidebar .sidebar-calendar {
-    height: 44%;
+    height: 28%;
     width: 100%;
     min-height: 250px;
     position: absolute;
     bottom: 0%;
     border: rgb(201, 184, 171);
-    border-width: 2px 0 0 0;
+    border-width: 4px 0 0 0;
     border-style: dotted;
     display: flex;
     align-items: center;
@@ -79,7 +79,7 @@ body {
     height: 5%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 }
 
 .nav .nav-button-wrapper {
@@ -99,11 +99,11 @@ body {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    user-select:none;
+    user-select: none;
     transition: 0.2s ease;
 }
 
-.nav .nav-button-wrapper .toggle-button {
+/* .nav .nav-button-wrapper .toggle-button {
     background-color: rgb(125, 205, 255);
 }
 
@@ -117,6 +117,10 @@ body {
 
 .nav .nav-button-wrapper .clear-button:hover {
     background-color: rgb(241, 139, 139);
+} */
+
+.logo {
+    margin-right: 15px;
 }
 
 .canvas {
@@ -128,14 +132,14 @@ body {
 
 .canvas .canvas-display {
     border-style: solid;
-    border-color: rgb(88, 85, 82);
-    background-color: rgb(255, 255, 255);
+    border-color: rgb(201, 184, 171);
+    background-color: rgb(249, 242, 237);
     overflow: hidden;
     position: absolute;
     height: 97%;
-    width: 95%;
-    left: 2.5%;
-    right: 2.5%;
-    bottom: 2.105%;
+    width: 97%;
+    left: 1.5%;
+    right: 1.5%;
+    bottom: 1.0%;
     border-radius: 10px;
 }
