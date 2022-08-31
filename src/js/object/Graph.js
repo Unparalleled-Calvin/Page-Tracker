@@ -88,7 +88,7 @@ class Graph {
         this.nodes.forEach((node, index) => {
             if (node.type != "wasted") {
                 let hrefTag = genHrefTag(node, 30)
-                let imgTag = node.iconUrl ? "<img src=\"" + node.iconUrl + "\" width=\"32px\" height=\"32px\">" : ""
+                let imgTag = node.iconUrl ? "<img src=\"" + node.iconUrl + "\" width=\"20px\" height=\"20px\">" : ""
                 let label = "<div style=\"display: flex; align-items: center; justify-content: center; min-height: 32px; min-width: 32px;\">" + imgTag + hrefTag + "</div>"
                 g.setNode(index, {
                     labelType: "html",
