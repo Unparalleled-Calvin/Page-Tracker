@@ -9,5 +9,6 @@ window.addEventListener('refresh', function () {
 }, false);
 
 window.onload = function () {
+    adjustWindow()
     window.dispatchEvent(refreshEvent)
 }

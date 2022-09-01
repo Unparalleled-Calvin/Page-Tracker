@@ -5,12 +5,12 @@ class Node {
             url: "",
             caption: "",
             iconUrl: "",
-            startTime: -1, // timestamp
-            endTime: -1, // timestamp
+            // startTime: -1, // timestamp
+            // endTime: -1, // timestamp
             totalTime: 0, // seconds
             visitCount: 1,
             isCollected: 0,
-            isCopied: 0,
+            // isCopied: 0,
             type: "default", // default
             prev: [], // index of edges
             succ: [], // index of edges
@@ -27,12 +27,12 @@ class Node {
         this.url = defaultParams.url
         this.caption = defaultParams.caption
         this.iconUrl = defaultParams.iconUrl
-        this.startTime = defaultParams.startTime
-        this.endTime = defaultParams.endTime
+        // this.startTime = defaultParams.startTime
+        // this.endTime = defaultParams.endTime
         this.totalTime = defaultParams.totalTime
         this.visitCount = defaultParams.visitCount
         this.isCollected = defaultParams.isCollected
-        this.isCopied = defaultParams.isCopied
+        // this.isCopied = defaultParams.isCopied
         this.type = defaultParams.type
         this.prev = defaultParams.prev
         this.succ = defaultParams.succ
@@ -42,12 +42,12 @@ class Node {
             + "url: " + this.url + "<br>"
             + "caption: " + this.caption + "<br>"
             + "iconUrl:" + this.iconUrl + "<br>"
-            + "startTime: " + this.startTime + "<br>"
-            + "endTime: " + this.endTime + "<br>"
+            // + "startTime: " + this.startTime + "<br>"
+            // + "endTime: " + this.endTime + "<br>"
             + "totalTime: " + this.totalTime + "<br>"
             + "visitCount: " + this.visitCount + "<br>"
             + "isCollected: " + this.isCollected + "<br>"
-            + "isCopied: " + this.isCopied + "<br>"
+            // + "isCopied: " + this.isCopied + "<br>"
             + "type: " + this.type + "<br>"
         return html
     }
