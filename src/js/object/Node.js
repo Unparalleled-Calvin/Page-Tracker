@@ -53,12 +53,92 @@ class Node {
     }
     equal(node) {
         return this.id == node.id &&
-        this.url == node.url &&
-        this.caption == node.caption &&
-        this.iconUrl == node.iconUrl &&
-        this.isCollected == node.isCollected &&
-        this.type == node.type &&
-        this.prev.toString() == node.prev.toString() &&
-        this.succ.toString() == node.succ.toString()
+            this.url == node.url &&
+            this.caption == node.caption &&
+            this.iconUrl == node.iconUrl &&
+            this.isCollected == node.isCollected &&
+            this.type == node.type &&
+            this.prev.toString() == node.prev.toString() &&
+            this.succ.toString() == node.succ.toString()
+    }
+    genHrefTag(captionLimit) {
+        let caption, hrefTag
+        if (this.caption) {
+            caption = this.caption
+        }
+        else if (this.url) {
+            caption = this.url
+        }
+        else {
+            caption = String(this.id)
+        }
+        if (caption.length > captionLimit) {
+            let letterPattern = new RegExp("[A-Za-z]"); let firstLine = caption.substring(0, captionLimit)
+            let cut1 = 1, cnt = 0, i
+            for (i = 0; i < caption.length; i++) {
+                if (caption.charCodeAt(i) > 255)
+                    cnt += 2
+                else
+                    cnt += 1
+                if (cnt >= captionLimit) {
+                    cut1 = i
+                    break
+                }
+            }
+            while (cut1 > 1 && letterPattern.test(firstLine.charAt(cut1 - 1)))
+                cut1--
+            if (cut1 == 1)
+                cut1 = i
+            firstLine = caption.substring(0, cut1)
+            let cut2 = caption.length
+            cnt = 0
+            for (; i < caption.length; i++) {
+                if (caption.charCodeAt(i) > 255)
+                    cnt += 2
+                else
+                    cnt += 1
+                if (cnt >= captionLimit) {
+                    cut2 = i
+                    break
+                }
+            }
+            while (cut2 > cut1 + 1 && letterPattern.test(firstLine.charAt(cut2 - 1)))
+                cut2--
+            if (cut2 == cut1 + 1)
+                cut2 = i
+            let secondLine = caption.substring(cut1, cut2) + (cut2 < caption.length ? "..." : "")
+            hrefTag =
+                "<div style=\"margin-left: 2px;\">" +
+                "<a href=" + this.url + " target=_blank>" + firstLine + "</a>" +
+                "<a href=" + this.url + " target=_blank>" + secondLine + "</a>" +
+                "</div>"
+        }
+        else {
+            hrefTag =
+                "<div style=\"margin-left: 2px;\">" +
+                "<a href=" + this.url + " target=_blank>" + caption + "</a>" +
+                "</div>"
+        }
+        return hrefTag
+    }
+    genIconTag() {
+        let iconTag = ""
+        if (this.totalTime > 1800) {
+            iconTag += "<div class=\"icon-star dwelltime-star\">🟊</div>"
+        }
+        if (this.visitCount > 2) {
+            iconTag += "<div class=\"icon-star launch-star\">🟊</div>"
+        }
+        if (this.isCollected) {
+            iconTag += "<div class=\"icon-star collect-star\">🟊</div>"
+        }
+        return iconTag
+    }
+    genLabel(captionLimit, imgSize) {
+        let hrefTag = this.genHrefTag(captionLimit)
+        let imgTag = this.iconUrl ? "<img src=\"" + this.iconUrl + "\" width=\"" + imgSize + "px\" height=\"" + imgSize + "px\">" : ""
+        let iconTag = this.genIconTag()
+        let label = "<div style=\"display: flex; align-items: center; justify-content: center; min-height: 32px; min-width: 32px;\">" + imgTag + hrefTag + iconTag + "</div>"
+        return label
     }
 }
