@@ -1,3 +1,7 @@
+.node {
+    user-select: none;
+}
+
 .node.default rect {
     stroke: rgb(143, 111, 255);
     stroke-width: 2px;

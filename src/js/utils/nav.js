@@ -32,11 +32,21 @@ d3.select(".clear-button").on("click", function () {
     }
 })
 
-window.onresize = function () {
+function adjustWindow() {
+    if (window.innerWidth < 950) {
+        d3.select(".logo").style("display", "none")
+    }
+    else {
+        d3.select(".logo").style("display", "block")
+    }
     if (window.innerWidth < 800 || window.innerHeight < 350) {
         foldSideBar()
     }
     else {
         unfoldSideBar()
     }
+}
+
+window.onresize = function () {
+    adjustWindow()
 }

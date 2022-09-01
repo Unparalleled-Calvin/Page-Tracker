@@ -16,6 +16,7 @@ body {
     left: -500px;
     top: -500px;
     overflow-wrap: anywhere;
+    user-select: none;
 }
 
 .sidebar {
@@ -166,6 +167,7 @@ body {
     border-style: solid;
     border-color: rgb(201, 184, 171);
     border-width: 2px;
+    user-select: none;
 }
 
 .legend .legend-item {
