@@ -157,7 +157,7 @@ body {
     left: 10px;
     width: 20%;
     height: 15%;
-    min-width: 140px;
+    min-width: 190px;
     min-height: 85px;
     display: flex;
     flex-direction: column;
@@ -171,7 +171,7 @@ body {
 }
 
 .legend .legend-item {
-    width: 80%;
+    width: 90%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -188,6 +188,7 @@ body {
 .legend .legend-item .legend-explain {
     width: 80%;
     float: left;
+    font-weight:500;
 }
 
 .legend-star {
