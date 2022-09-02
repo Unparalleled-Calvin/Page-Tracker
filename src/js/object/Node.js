@@ -53,10 +53,11 @@ class Node {
                 + "type: " + this.type + "<br>"
         }
         else {
-            html = "Time&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:" + this.totalTime + "s<br>"
-                 + "Count&nbsp;&nbsp;&nbsp;&nbsp;:" + this.visitCount + "<br>"
+            html = "Time&nbsp;&nbsp;&nbsp;&nbsp;:" + this.totalTime + "s<br>"
+                 + "Count&nbsp;&nbsp;&nbsp;:" + this.visitCount + "<br>"
             if (this.isCollected)
-                html += "Collected:True<br>"
+                html += "Favorite:True<br>"
+                         
         }
         return html
     }
