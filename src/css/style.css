@@ -12,11 +12,12 @@ body {
     color: rgb(255, 255, 255);
     min-width: 50px;
     max-width: 200px;
-    min-height: 50px;
+    min-height: 32px;
     left: -500px;
     top: -500px;
     overflow-wrap: anywhere;
     user-select: none;
+    padding: 5px;
 }
 
 .sidebar {

@@ -37,18 +37,27 @@ class Node {
         this.prev = defaultParams.prev
         this.succ = defaultParams.succ
     }
-    infoHTML() {
-        let html = "id: " + this.id + "<br>"
-            + "url: " + this.url + "<br>"
-            + "caption: " + this.caption + "<br>"
-            + "iconUrl:" + this.iconUrl + "<br>"
-            // + "startTime: " + this.startTime + "<br>"
-            // + "endTime: " + this.endTime + "<br>"
-            + "totalTime: " + this.totalTime + "<br>"
-            + "visitCount: " + this.visitCount + "<br>"
-            + "isCollected: " + this.isCollected + "<br>"
-            // + "isCopied: " + this.isCopied + "<br>"
-            + "type: " + this.type + "<br>"
+    infoHTML(debug = false) {
+        let html
+        if (debug) {
+            html = "id: " + this.id + "<br>"
+                + "url: " + this.url + "<br>"
+                + "caption: " + this.caption + "<br>"
+                + "iconUrl:" + this.iconUrl + "<br>"
+                // + "startTime: " + this.startTime + "<br>"
+                // + "endTime: " + this.endTime + "<br>"
+                + "totalTime: " + this.totalTime + "s <br>"
+                + "visitCount: " + this.visitCount + "<br>"
+                + "isCollected: " + this.isCollected + "<br>"
+                // + "isCopied: " + this.isCopied + "<br>"
+                + "type: " + this.type + "<br>"
+        }
+        else {
+            html = "Total time: " + this.totalTime + "s<br>"
+                + "Opened: " + this.visitCount + " times<br>"
+            if (this.isCollected)
+                html += "Is collected: True<br>"
+        }
         return html
     }
     equal(node) {
