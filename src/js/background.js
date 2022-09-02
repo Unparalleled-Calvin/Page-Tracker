@@ -117,6 +117,7 @@ chrome.tabs.onActivated.addListener(() => {
  */
 chrome.webNavigation.onBeforeNavigate.addListener((details) => {
     if (details.frameType == "outermost_frame") {
+        console.log(details)
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             let tab = tabs[0]
             let startUrl = ""
@@ -343,16 +344,23 @@ function checkAbnormalNodes() {
                                 }
                             }
                         })
-                    } /*else if(node.url.startsWith("https://www.bing.com/ck/")){
-                        let idx = history.graph.queryNode("caption", node.url)
-                        if (history.graph.nodes[index] != null && history.graph.nodes[idx] != null) {
-                            history.graph.nodes = history.graph.mergeNode(idx, index)
-                        }
-                        setHistoryByDate(history, today)
-                    }*/
+                    } else if (node.url.startsWith("https://www.bing.com")) {
+                        let searchQ = node.url.substring(node.url.indexOf('.'))
+                        chrome.history.search({ text: searchQ }, result => {
+                            if (result.length > 0) {
+                                if (checkIfOnlyFirstDomainDiff(node.url, result[0].url)) {
+                                    let idx = history.graph.queryNode("url", result[0].url)
+                                    if (history.graph.nodes[index] != null && history.graph.nodes[idx] != null) {
+                                        history.graph.nodes = history.graph.mergeNode(index, idx)
+                                    }
+                                    setHistoryByDate(history, today)
+                                }
+                            }
+                        })
+                    }
                 }
                 // merge new tab into root (compatible to edge and chrome)
-                if(node.type != "wasted" && node.url.endsWith("://newtab/")){
+                if (node.type != "wasted" && (node.url.endsWith("://newtab/") || node.url == "http://lx.pub/")) {
                     let idx = history.graph.queryNode("id", "root")
                     if (history.graph.nodes[index] != null && history.graph.nodes[idx] != null) {
                         history.graph.nodes = history.graph.mergeNode(index, idx)
@@ -391,6 +399,17 @@ function checkIfOnlyTldDiff(url1, url2) {
     let temp2a = domain2.substring(domain2.lastIndexOf(".") + 1)
     // support Chinese HK China USA and Singapore
     if (domain1 == temp2 && (temp2a == "hk" || temp2a == "cn" || temp2a == "us" || temp2a == "sg")) {
+        return true
+    }
+    return false
+}
+
+function checkIfOnlyFirstDomainDiff(url1, url2) {
+    let domain1 = extractDomain(url1)
+    let domain2 = extractDomain(url2)
+    let temp2a = domain2.substring(0, domain2.indexOf("."))
+    let temp2 = domain2.substring(domain2.indexOf(".") + 1)
+    if (domain1 == temp2 && (temp2a == "cn" || temp2a == "hk" || temp2a == "us" || temp2a == "sg")) {
         return true
     }
     return false

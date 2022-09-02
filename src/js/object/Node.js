@@ -37,7 +37,7 @@ class Node {
         this.prev = defaultParams.prev
         this.succ = defaultParams.succ
     }
-    infoHTML(debug = false) {
+    infoHTML(debug = true) {
         let html
         if (debug) {
             html = "id: " + this.id + "<br>"
@@ -54,10 +54,10 @@ class Node {
         }
         else {
             html = "Time&nbsp;&nbsp;&nbsp;&nbsp;:" + this.totalTime + "s<br>"
-                 + "Count&nbsp;&nbsp;&nbsp;:" + this.visitCount + "<br>"
+                + "Count&nbsp;&nbsp;&nbsp;:" + this.visitCount + "<br>"
             if (this.isCollected)
                 html += "Favorite:True<br>"
-                         
+
         }
         return html
     }
