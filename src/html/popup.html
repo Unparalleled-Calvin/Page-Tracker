@@ -6,9 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
     <link rel="stylesheet" type="text/css" href="../css/node.css">
     <link rel="stylesheet" type="text/css" href="../css/edge.css">
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" href="../css/legend.css">
+    <link rel="stylesheet" type="text/css" href="../css/nav.css">
+    <link rel="stylesheet" type="text/css" href="../css/sidebar.css">
     <link rel="stylesheet" type="text/css" href="../css/calendar.css">
     <link rel="stylesheet" type="text/css" , href="../css/lib/font-awesome-4.7.0/css/font-awesome.min.css">
     <title>Page Tracker</title>
@@ -18,25 +21,6 @@
     <div class="sidebar">
         <div class="sidebar-header"><img class="logo" src="../icon/icon_48.png" alt="">Page Tracker</div>
         <div class="sidebar-item"></div>
-        <div class="sidebar-calendar">
-            <div class="calendar" id="table">
-                <div class="calendar-header">
-                    <button class="btn" id="prevMonth">&lt;</button>
-                    <div class="month" id="month-header"></div>
-                    <button class="btn" id="nextMonth">&gt;</button>
-                </div>
-                <div class="calendar-table" id="calendar-table"></div>
-                <div class="calendar-input" id="date-search">
-                    <input type="date" class="text-field" name="date" id="date" required>
-                    <button id="date-submit" class="btn">Go</button>
-                </div>
-                <div class="day-assets">
-                    <button class="btn" id="prevDay">Prev</button>
-                    <button class="btn" id="resetDate">Today</button>
-                    <button class="btn" id="nextDay">Next</button>
-                </div>
-            </div>
-        </div>
     </div>
     <div class="content">
         <div class="nav">
@@ -47,11 +31,11 @@
                     </div>
                 </div>
                 <div class="right-button-wrapper">
-                    <div class="nav-button clear-button">
-                        <li class="fa fa-trash fa-lg"></li>
-                    </div>
                     <div class="nav-button calendar-button">
                         <li class="fa fa-calendar fa-lg"></li>
+                    </div>
+                    <div class="nav-button clear-button">
+                        <li class="fa fa-trash fa-lg"></li>
                     </div>
                 </div>
             </div>
@@ -82,6 +66,23 @@
                             <div class="legend-line highlight-line">━</div>
                         </div>
                         <div class="legend-explain">current page</div>
+                    </div>
+                </div>
+                <div class="calendar" id="table">
+                    <div class="calendar-header">
+                        <button class="btn" id="prevMonth">&lt;</button>
+                        <div class="month" id="month-header"></div>
+                        <button class="btn" id="nextMonth">&gt;</button>
+                    </div>
+                    <div class="calendar-table" id="calendar-table"></div>
+                    <div class="calendar-input" id="date-search">
+                        <input type="date" class="text-field" name="date" id="date" required>
+                        <button id="date-submit" class="btn">Go</button>
+                    </div>
+                    <div class="day-assets">
+                        <button class="btn" id="prevDay">Prev</button>
+                        <button class="btn" id="resetDate">Today</button>
+                        <button class="btn" id="nextDay">Next</button>
                     </div>
                 </div>
                 <svg id="history">

@@ -1,0 +1,44 @@
+.legend {
+    position: absolute;
+    border-radius: 15px;
+    top: 10px;
+    left: 10px;
+    width: 20%;
+    height: 15%;
+    min-width: 190px;
+    min-height: 85px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(251, 251, 250, 0.9);
+    border-style: solid;
+    border-color: rgb(201, 184, 171);
+    border-width: 2px;
+    user-select: none;
+}
+
+.legend .legend-item {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.legend .legend-item .legend-example {
+    width: 20%;
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.legend .legend-item .legend-explain {
+    width: 80%;
+    float: left;
+    font-weight:500;
+}
+
+.legend-star {
+    font-size: medium;
+}
