@@ -20,6 +20,7 @@ class Graph {
         this.edges = defaultParams.edges
     }
     dagre() {
+        this.completeGraph()
         let g = new dagreD3.graphlib.Graph()
             .setGraph({
                 rankdir: 'LR'
@@ -32,11 +33,6 @@ class Graph {
                     label: node.genLabel(30, 20),
                     class: node.type
                 })
-                if (!node.prev.length && index) {
-                    let edgeIndex = this.addEdge(new Edge({src: 0, dst: index}))
-                    node.prev.push(edgeIndex)
-                    this.nodes[0].succ.push(edgeIndex)
-                }
             }
         })
         this.edges.forEach((edge, index) => {
@@ -53,6 +49,16 @@ class Graph {
         });
 
         return g
+    }
+    completeGraph() { // supplement edges to complete the graph
+        this.nodes.forEach((node, index) => {
+            if (node.type != "wasted" && !node.prev.length && index) {
+                let edgeIndex = this.addEdge(new Edge({ src: 0, dst: index }))
+                node.prev.push(edgeIndex)
+                this.nodes[0].succ.push(edgeIndex)
+            }
+        })
+        return this
     }
     queryNode(field, value) { // query the node index by sepcific field e.g. queryNode("url", "https://www.example.com"). returns index if found, -1 otherwise
         let idx = -1

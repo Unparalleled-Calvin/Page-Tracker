@@ -35,7 +35,7 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom) {
 
         let render = new dagreD3.render();
 
-        graph = history.graph
+        graph = history.graph.completeGraph().subGraph(rootIndex)
 
         if (formatDate(date, "yyyy-MM-dd") != formatDate(new Date(), "yyyy-MM-dd")) {
             graph.nodes.forEach((node, index) => {
@@ -83,14 +83,21 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom) {
             }
 
             let nodesList = []
-            graph.nodes[0].succ.forEach((edgeIndex, index) => {
-                let edge = graph.edges[edgeIndex]
-                if (edge.type != "wasted") {
-                    let nodeIndex = edge.dst
-                    let node = graph.nodes[nodeIndex]
-                    nodesList.push([node, nodeIndex])
-                }
-            })
+            let rootNode = graph.nodes[0]
+            if (rootIndex == 0) {
+                nodesList.push([rootNode, 0])
+                rootNode.succ.forEach((edgeIndex, index) => {
+                    let edge = graph.edges[edgeIndex]
+                    if (edge.type != "wasted") {
+                        let nodeIndex = edge.dst
+                        let node = graph.nodes[nodeIndex]
+                        nodesList.push([node, nodeIndex])
+                    }
+                })
+            }
+            else {
+                nodesList.push([new Node(), 0])
+            }
             renderSidebarItems(nodesList, date)
         }
 
@@ -143,6 +150,12 @@ function renderSidebarItems(nodesList, date) {
             .classed("item-node", true)
             .attr("node-index", nodeIndex)
             .text(node.genCaption())
+    })
+    d3.selectAll(".sidebar-item .item-node").on("click", function () {
+        rootIndex = parseInt(d3.select(this).attr("node-index"))
+        previousTransform = undefined
+        firstDisplay = true
+        readAndRenderGraph(date, containerId, tooltipId, zoom)
     })
 }
 
