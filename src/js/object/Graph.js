@@ -33,9 +33,9 @@ class Graph {
                     class: node.type
                 })
                 if (!node.prev.length && index) {
-                    g.setEdge(0, index, {
-                        class: "default",
-                    })
+                    let edgeIndex = this.addEdge(new Edge({src: 0, dst: index}))
+                    node.prev.push(edgeIndex)
+                    this.nodes[0].succ.push(edgeIndex)
                 }
             }
         })

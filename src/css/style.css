@@ -54,6 +54,10 @@ body {
     font-size: 15px;
 }
 
+.sidebar .sidebar-item .item-node {
+    overflow: hidden;
+}
+
 .sidebar .sidebar-calendar {
     height: 28%;
     width: 100%;

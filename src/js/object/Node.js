@@ -71,8 +71,8 @@ class Node {
             this.prev.toString() == node.prev.toString() &&
             this.succ.toString() == node.succ.toString()
     }
-    genHrefTag(captionLimit) {
-        let caption, hrefTag
+    genCaption() {
+        let caption
         if (this.caption) {
             caption = this.caption
         }
@@ -82,6 +82,10 @@ class Node {
         else {
             caption = String(this.id)
         }
+        return caption
+    }
+    genHrefTag(captionLimit) {
+        let caption = this.genCaption(), hrefTag
         if (caption.length > captionLimit) {
             let letterPattern = new RegExp("[A-Za-z]"); let firstLine = caption.substring(0, captionLimit)
             let cut1 = 1, cnt = 0, i
