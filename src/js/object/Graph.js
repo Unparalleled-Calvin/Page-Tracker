@@ -143,4 +143,54 @@ class Graph {
         })
         return this.nodes
     }
+    markNode(index) { // recursively mark "default"
+        let node = this.nodes[index]
+        if (node.type != "default") {
+            node.type = "default"
+            node.succ.forEach((edgeIndex, index) => {
+                this.markEdge(edgeIndex)
+            })
+        }
+    }
+    markEdge(index) { // recursively mark "default"
+        let edge = this.edges[index]
+        if (edge.type != "default") {
+            edge.type = "default"
+            this.markNode(edge.dst)
+        }
+    }
+    exchangeNode(index1, index2) { // exchange node1 and node2
+        this.nodes[index1].prev.forEach((edgeIndex, index) => {
+            this.edges[edgeIndex].dst = index2
+        })
+        this.nodes[index1].succ.forEach((edgeIndex, index) => {
+            this.edges[edgeIndex].src = index2
+        })
+        this.nodes[index2].prev.forEach((edgeIndex, index) => {
+            this.edges[edgeIndex].dst = index1
+        })
+        this.nodes[index2].succ.forEach((edgeIndex, index) => {
+            this.edges[edgeIndex].src = index1
+        })
+        let node = this.nodes[index1]
+        this.nodes[index1] = this.nodes[index2]
+        this.nodes[index2] = node
+    }
+    subGraph(rootIndex) { // generate a subgraph with index as root
+        let subgraph = new Graph({ graph: this }) // deep copy self
+        subgraph.nodes.forEach((node, index) => {
+            node.type = "wasted"
+        })
+        subgraph.edges.forEach((edge, index) => {
+            edge.type = "wasted"
+        })
+        subgraph.markNode(rootIndex)
+        subgraph.nodes.forEach((node, index) => {
+            if (this.nodes[index].type == "highlight" && node.type == "default") {
+                node.type = "highlight"
+            }
+        })
+        subgraph.exchangeNode(0, rootIndex)
+        return subgraph
+    }
 }

@@ -171,8 +171,6 @@ function nextDay() {
     generateCalendar();
 }
 
-document.onload = generateCalendar(date);
-
 $("#prevDay").on("click", function() {
     prevDay()
 })
