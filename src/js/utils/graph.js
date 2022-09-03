@@ -35,7 +35,7 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom) {
 
         let render = new dagreD3.render();
 
-        graph = history.graph.completeGraph().subGraph(rootIndex)
+        graph = history.graph.subGraph(rootIndex)
 
         if (formatDate(date, "yyyy-MM-dd") != formatDate(new Date(), "yyyy-MM-dd")) {
             graph.nodes.forEach((node, index) => {

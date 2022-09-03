@@ -20,7 +20,7 @@ class Graph {
         this.edges = defaultParams.edges
     }
     dagre() {
-        this.completeGraph()
+        this.tidyGraph()
         let g = new dagreD3.graphlib.Graph()
             .setGraph({
                 rankdir: 'LR'
@@ -50,7 +50,11 @@ class Graph {
 
         return g
     }
-    completeGraph() { // supplement edges to complete the graph
+    tidyGraph() { // supplement edges, clean arrays
+        this.nodes.forEach((node, index) => {
+            node.prev = Array.from(new Set(node.prev))
+            node.succ = Array.from(new Set(node.succ))
+        })
         this.nodes.forEach((node, index) => {
             if (node.type != "wasted" && !node.prev.length && index) {
                 let edgeIndex = this.addEdge(new Edge({ src: 0, dst: index }))
@@ -183,6 +187,7 @@ class Graph {
         this.nodes[index2] = node
     }
     subGraph(rootIndex) { // generate a subgraph with index as root
+        this.tidyGraph()
         let subgraph = new Graph({ graph: this }) // deep copy self
         subgraph.nodes.forEach((node, index) => {
             node.type = "wasted"
