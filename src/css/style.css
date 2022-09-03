@@ -86,14 +86,26 @@ body {
     height: 5%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .nav .nav-button-wrapper {
-    width: 100%;
+    width: 95%;
     height: 80%;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+}
+
+.nav .nav-button-wrapper .left-button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav .nav-button-wrapper .right-button-wrapper {
+    display: flex;
+    align-items: space-between;
     justify-content: space-between;
 }
 
