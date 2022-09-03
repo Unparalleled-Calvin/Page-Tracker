@@ -54,7 +54,7 @@ chrome.history.onVisited.addListener((result) => {
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     if (request.name == "delete") {
         let key = getStorageKey(request.date)
-        let result = await chrome.storage.local.remove([key])
+        chrome.storage.local.remove([key])
         sendResponse({ status: 'ok' })
     }
 })
@@ -251,7 +251,7 @@ function handleNavigation(startUrl, endUrl) {
             if (!endUrl.startsWith("chrome-extension://")) {
                 let newHistory = new History()
                 let newNode = new Node({ //TODO: need more info
-                    id: history.graph.nodes.length,
+                    id: newHistory.graph.nodes.length,
                     url: endUrl
                 })
                 currIdx = newHistory.graph.addNode(newNode)
@@ -352,7 +352,7 @@ function checkAbnormalNodes() {
                     }*/
                 }
                 // merge new tab into root (compatible to edge and chrome)
-                if(node.type != "wasted" && node.url.endsWith("://newtab/")){
+                if (node.type != "wasted" && node.url.endsWith("://newtab/")) {
                     let idx = history.graph.queryNode("id", "root")
                     if (history.graph.nodes[index] != null && history.graph.nodes[idx] != null) {
                         history.graph.nodes = history.graph.mergeNode(index, idx)
