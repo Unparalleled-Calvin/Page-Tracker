@@ -1,3 +1,6 @@
+/**
+ * import necessary js file
+ */
 try {
     importScripts('./object/History.js', './object/Graph.js',
         './object/Node.js', './object/Edge.js');
@@ -11,46 +14,25 @@ try {
     console.error(e)
 }
 
+/**
+ * default refresh interval
+ */
 let refreshInterval = 3
 
 /**
- * history listener "replenish the nodes' content"
+ * click extension icon
  */
-chrome.history.onVisited.addListener((result) => {
-    let today = new Date()
-    getHistoryByDate(today).then((history) => {
-        if (history) {
-            // info about caption id isCollected
-            chrome.history.search({ text: '' }, result => {
-                for (var i = 0; i < result.length; i++) {
-                    let idx = history.graph.queryNode("url", result[i].url)
-                    if (idx != -1) {
-                        let node = history.graph.nodes[idx]
-                        let promise
-                        promise = new Promise(function (resolve, reject) {
-                            resolve(chrome.bookmarks.search({ url: result[i].url }))
-                        })
-                        node.caption = result[i].title
-                        node.id = result[i].id
+chrome.action.onClicked.addListener((tab) => {
+    chrome.windows.create({
+        url: chrome.runtime.getURL("../html/popup.html"),
+        type: "popup"
+    });
+});
 
-                        promise.then(results => {
-                            if (results.length != 0) {
-                                node.isCollected = 1
-                            }
-                            history.graph.nodes[idx] = node
-                            setHistoryByDate(history, today)
-                        })
-                    }
-                }
-            })
-        }
-    })
-})
-
-// chrome.history.onVisitRemoved.addListener((result) => {
-//     console.log(result)
-// })
-
+/**
+ * listen delete message from nav.js
+ * delete specific item according to the date
+ */
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     if (request.name == "delete") {
         let key = getStorageKey(request.date)
@@ -61,19 +43,18 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 
 /**
  * tab listener
+ * in charge of visitCount and current node tracking
  */
 chrome.tabs.onActivated.addListener(() => {
     // get and refresh URL when switch tabs happens
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         var activeTab = tabs[0]
-        // console.log(activeTab)
         // avoid getting ""
         var value = activeTab.url || activeTab.pendingUrl
 
         // avoid the local variable disappearing caused by service_worker close down
         updateCurrentUrlStorage(value)
 
-        // 0. demonstrate
         displayUrl(value)
         // 1. query the current node
         let today = new Date()
@@ -100,6 +81,7 @@ chrome.tabs.onActivated.addListener(() => {
             // 2. change the highlight status
             if (currIdx != -1) { // switch tab not navigate
                 var node = history.graph.nodes[currIdx]
+                // add details of node
                 node.visitCount += 1
                 history.graph.nodes[currIdx] = node
 
@@ -114,10 +96,10 @@ chrome.tabs.onActivated.addListener(() => {
 
 /**
  * web navigation listener
+ * in charge of the recording of basic navigation information
  */
 chrome.webNavigation.onBeforeNavigate.addListener((details) => {
     if (details.frameType == "outermost_frame") {
-        console.log(details)
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             let tab = tabs[0]
             let startUrl = ""
@@ -153,7 +135,43 @@ chrome.webNavigation.onBeforeNavigate.addListener((details) => {
     }
 })
 
-// enrich the nodes' information 
+/**
+ * add some details from history listener
+ */
+chrome.history.onVisited.addListener((result) => {
+    let today = new Date()
+    getHistoryByDate(today).then((history) => {
+        if (history) {
+            // info about caption id isCollected
+            chrome.history.search({ text: '' }, result => {
+                for (var i = 0; i < result.length; i++) {
+                    let idx = history.graph.queryNode("url", result[i].url)
+                    if (idx != -1) {
+                        let node = history.graph.nodes[idx]
+                        let promise
+                        promise = new Promise(function (resolve, reject) {
+                            resolve(chrome.bookmarks.search({ url: result[i].url }))
+                        })
+                        node.caption = result[i].title
+                        node.id = result[i].id
+
+                        promise.then(results => {
+                            if (results.length != 0) {
+                                node.isCollected = 1
+                            }
+                            history.graph.nodes[idx] = node
+                            setHistoryByDate(history, today)
+                        })
+                    }
+                }
+            })
+        }
+    })
+})
+
+/**
+ * add some details through history and bookmarks
+ */
 chrome.webNavigation.onCompleted.addListener((details => {
     if (details.frameType == "outermost_frame") {
         let today = new Date()
@@ -203,8 +221,12 @@ chrome.webNavigation.onCompleted.addListener((details => {
     }
 }))
 
+/**
+ * link the two nodes
+ * @param {string} startUrl 
+ * @param {string} endUrl 
+ */
 function handleNavigation(startUrl, endUrl) {
-    // 0. demonstrate
     displayTrace(startUrl, endUrl)
     // 1. maintain the relations
     let today = new Date()
@@ -216,7 +238,7 @@ function handleNavigation(startUrl, endUrl) {
             currIdx = history.graph.queryNode("url", startUrl)
             if (currIdx == -1) {
                 if (!startUrl.startsWith("chrome-extension://")) {
-                    let newNode = new Node({ //TODO: need more info
+                    let newNode = new Node({
                         id: history.graph.nodes.length,
                         url: startUrl
                     })
@@ -227,15 +249,13 @@ function handleNavigation(startUrl, endUrl) {
             targetIdx = history.graph.queryNode("url", endUrl)
             if (targetIdx == -1) {
                 if (!endUrl.startsWith("chrome-extension://")) {
-                    let newNode = new Node({ //TODO: need more info
+                    let newNode = new Node({
                         id: history.graph.nodes.length,
                         url: endUrl
                     })
                     targetIdx = history.graph.addNode(newNode)
                 }
             }
-            // console.log(currIdx)
-            // console.log(targetIdx)
             // 1.3 check if there is already an edge between them
             let edgeIdx = history.graph.queryEdge(currIdx, targetIdx)
 
@@ -246,12 +266,10 @@ function handleNavigation(startUrl, endUrl) {
             // 1.3.2 otherwise do nothing in step 1.3
 
         } else {
-            // may not go into this branch (extreme case: this event happens at in a new day without a previous tab change)
-
             // create a new history instance
             if (!endUrl.startsWith("chrome-extension://")) {
                 let newHistory = new History()
-                let newNode = new Node({ //TODO: need more info
+                let newNode = new Node({
                     id: newHistory.graph.nodes.length,
                     url: endUrl
                 })
@@ -262,7 +280,6 @@ function handleNavigation(startUrl, endUrl) {
             }
         }
 
-        console.log(targetIdx)
         // 2. change the highlight status
         history.graph.toggleSwitch(targetIdx)
 
@@ -282,12 +299,13 @@ function displayTrace(oldURL, newURL) {
 }
 
 function updateCurrentUrlStorage(value) {
-    chrome.storage.local.set({ 'currentURL': value }, function () {
-        // do nothing
-    })
+    chrome.storage.local.set({ 'currentURL': value })
 }
 
-// update time info in a time interval
+/**
+ * update time info in a time interval
+ * also, check abnormal nodes periodically
+ */
 function updateAdditionInfo() {
     let today = new Date()
     getHistoryByDate(today).then((history) => {
@@ -316,6 +334,9 @@ function updateAdditionInfo() {
     checkAbnormalNodes()
 }
 
+/**
+ * check the nodes with no caption but not all situations are covered
+ */
 function checkAbnormalNodes() {
     let today = new Date()
     getHistoryByDate(today).then((history) => {
@@ -367,16 +388,6 @@ function checkAbnormalNodes() {
                     }
                     setHistoryByDate(history, today)
                 }
-                // else if (node.type != "wasted" && node.caption.startsWith("https://www.bing.com/ck/")) {
-                //     let idx = history.graph.queryNode("url", node.caption)
-                //     let searchItem = history.graph.nodes[index].url
-                //     if (history.graph.nodes[index] != null && history.graph.nodes[idx] != null) {
-                //         let str = searchItem.substring(searchItem.indexOf('?q=') + 3, searchItem.indexOf('&'))
-                //         // history.graph.nodes[idx].caption = str
-                //         // history.graph.nodes[index].caption = str
-                //     }
-                //     setHistoryByDate(history, today)
-                // }
             })
             history.graph.nodes = arr
             setHistoryByDate(history, today)
@@ -384,14 +395,22 @@ function checkAbnormalNodes() {
     })
 }
 
-// Extract the domain from the url
-// e.g. http://google.com/ -> google.com
+/**
+ * Extract the domain from the url
+ * @param {string} url 
+ * @returns {string} domain
+ */
 function extractDomain(url) {
     var re = /:\/\/(www\.)?(.+?)\//;
     return url.match(re)[2];
 }
 
-// Return true if URL2 has a higher level of top-level domain name than URL1
+/**
+ * e.g. www.chrome.com --- www.chrome.com.hk -- return true
+ * @param {string} url1 
+ * @param {string} url2 
+ * @returns boolean
+ */
 function checkIfOnlyTldDiff(url1, url2) {
     let domain1 = extractDomain(url1)
     let domain2 = extractDomain(url2)
@@ -404,6 +423,12 @@ function checkIfOnlyTldDiff(url1, url2) {
     return false
 }
 
+/**
+ * e.g. www.bing.com --- cn.bing.com --> then return true 
+ * @param {string} url1 
+ * @param {string} url2 
+ * @returns boolean
+ */
 function checkIfOnlyFirstDomainDiff(url1, url2) {
     let domain1 = extractDomain(url1)
     let domain2 = extractDomain(url2)
@@ -415,12 +440,7 @@ function checkIfOnlyFirstDomainDiff(url1, url2) {
     return false
 }
 
-// click extension icon
-chrome.action.onClicked.addListener((tab) => {
-    chrome.windows.create({
-        url: chrome.runtime.getURL("../html/popup.html"),
-        type: "popup"
-    });
-});
-
+/**
+ * refresh the info periodically
+ */
 setInterval(updateAdditionInfo, refreshInterval * 1000)
