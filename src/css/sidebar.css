@@ -66,12 +66,15 @@
     cursor: pointer;
 }
 
-.sidebar .sidebar-search .search-result {
+.search-result {
     display: none;
     position: absolute;
     top: 88px;
     min-height: 20px;
     width: calc(95% - 4px);
+    max-height: calc(100% - 88px);
+    overflow-x: hidden;
+    overflow-y: auto;
     background-color: rgb(255, 255, 255);
     border: 2px;
     border-color: rgb(201, 184, 171);
@@ -79,16 +82,16 @@
     border-style: solid;
 }
 
-.sidebar .sidebar-search .search-result .item-node {
-    cursor: pointer;
+.search-result::-webkit-scrollbar{
+    width: 10px;
 }
 
-.sidebar .sidebar-search .search-result .item-node.normal {
-    background-color: rgb(249, 242, 237);
+.search-result::-webkit-scrollbar-track{
+    background-color: rgb(247, 231, 219);
 }
 
-.sidebar .sidebar-search .search-result .item-node.focused {
-    background-color: rgb(254, 235, 216);
+.search-result::-webkit-scrollbar-thumb {
+    background-color: rgb(226, 203, 186);
 }
 
 .sidebar .sidebar-item {
@@ -119,15 +122,19 @@
     background-color: rgb(226, 203, 186);
 }
 
-.sidebar .sidebar-item .item-node {
+.sidebar-item .item-node {
     padding-left: 10%;
     cursor: pointer;
 }
 
-.sidebar .sidebar-item .item-node.normal {
+.search-result .item-node {
+    cursor: pointer;
+}
+
+.item-node.normal {
     background-color: rgb(249, 242, 237);
 }
 
-.sidebar .sidebar-item .item-node.focused {
+.item-node.focused {
     background-color: rgb(254, 235, 216);
 }
