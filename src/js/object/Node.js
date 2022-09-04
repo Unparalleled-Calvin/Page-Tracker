@@ -23,6 +23,7 @@ class Node {
             Object.assign(defaultParams, params || {})
             // $.extend(defaultParams, params)
         }
+        this.type = defaultParams.type
         this.id = defaultParams.id
         this.url = defaultParams.url
         this.caption = defaultParams.caption
@@ -33,7 +34,6 @@ class Node {
         this.visitCount = defaultParams.visitCount
         this.isCollected = defaultParams.isCollected
         // this.isCopied = defaultParams.isCopied
-        this.type = defaultParams.type
         this.prev = defaultParams.prev
         this.succ = defaultParams.succ
     }

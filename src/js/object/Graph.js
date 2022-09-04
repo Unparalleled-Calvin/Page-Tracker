@@ -133,22 +133,18 @@ class Graph {
         node1.type = "wasted"
         node1.prev.forEach((edgeIndex, index) => {
             let edge = this.edges[edgeIndex]
-            if (this.queryEdge(edge.src, index2) != -1 || edge.src == index2) { // exists edge from prev to node2
-                edge.type = "wasted"
-            }
-            else {
-                edge.dst = index2
-                node2.prev.push(edgeIndex)
+            edge.type = "wasted"
+            if (this.queryEdge(edge.src, index2) == -1 && edge.src != index2) { // exists no edge from prev to node2
+                let newEdgeIndex = this.addEdge(new Edge({src: edge.src, dst: index2}))
+                node2.prev.push(newEdgeIndex)
             }
         })
         node1.succ.forEach((edgeIndex, index) => {
             let edge = this.edges[edgeIndex]
-            if (this.queryEdge(index2, edge.dst) != -1 || edge.dst == index2) { // exists edge from node2 to dst
-                edge.type = "wasted"
-            }
-            else {
-                edge.src = index2
-                node2.succ.push(edgeIndex)
+            edge.type = "wasted"
+            if (this.queryEdge(index2, edge.dst) == -1 && edge.dst != index2) { // exists no edge from node2 to dst
+                let newEdgeIndex = this.addEdge(new Edge({src: index2, dst: edge.dst}))
+                node2.succ.push(newEdgeIndex)
             }
         })
         return this.nodes
@@ -196,6 +192,17 @@ class Graph {
             edge.type = "wasted"
         })
         subgraph.markNode(rootIndex)
+        this.nodes.forEach((node, index) => {
+            if (node.type == "wasted") {
+                subgraph.nodes[index].type = "wasted"
+                node.prev.forEach((edgeIndex) => {
+                    subgraph.edges[edgeIndex].type = "wasted"
+                })
+                node.succ.forEach((edgeIndex) => {
+                    subgraph.edges[edgeIndex].type = "wasted"
+                })
+            }
+        })
         subgraph.nodes.forEach((node, index) => {
             if (this.nodes[index].type == "highlight" && node.type == "default") {
                 node.type = "highlight"
