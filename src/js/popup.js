@@ -9,6 +9,7 @@ window.addEventListener('refresh', function () {
 }, false);
 
 window.onload = function () {
+    generateCalendar(date)
     adjustWindow()
     window.dispatchEvent(refreshEvent)
 }

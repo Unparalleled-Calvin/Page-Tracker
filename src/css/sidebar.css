@@ -1,0 +1,140 @@
+.sidebar {
+    width: 25%;
+    height: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0px;
+    left: 0px;
+    border: rgb(201, 184, 171);
+    border-width: 0 4px 0 0;
+    border-style: dotted;
+    overflow: hidden;
+    transition: 0.5s;
+}
+
+.sidebar .sidebar-header {
+    font-size: 30px;
+    height: 60px;
+    white-space: nowrap;
+    text-align: center;
+    user-select: none;
+    border: rgb(201, 184, 171);
+    border-width: 0 0 4px 0;
+    border-style: dotted;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar .sidebar-search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar .sidebar-search .search-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    width: 95%;
+}
+
+.sidebar .sidebar-search .search-input {
+    height: 20px;
+    width: 80%;
+    border: 2px;
+    border-right: 0px;
+    border-color: rgb(201, 184, 171);
+    border-radius: 5px 0 0 5px;
+    border-style: solid;
+    outline: none;
+}
+
+.sidebar .sidebar-search .search-button {
+    height: 22px;
+    width: 20%;
+    background-color: rgb(201, 184, 171);
+    border: 2px;
+    border-color: rgb(201, 184, 171);
+    border-style: solid;
+    border-radius: 0 5px 5px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.search-result {
+    display: none;
+    position: absolute;
+    top: 88px;
+    min-height: 20px;
+    width: calc(95% - 4px);
+    max-height: calc(100% - 88px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: rgb(255, 255, 255);
+    border: 2px;
+    border-color: rgb(201, 184, 171);
+    border-radius: 0 0 5px 5px;
+    border-style: solid;
+}
+
+.search-result::-webkit-scrollbar{
+    width: 10px;
+}
+
+.search-result::-webkit-scrollbar-track{
+    background-color: rgb(247, 231, 219);
+}
+
+.search-result::-webkit-scrollbar-thumb {
+    background-color: rgb(226, 203, 186);
+}
+
+.sidebar .sidebar-item {
+    height: calc(100% - 60px);
+    font-size: 15px;
+    user-select: none;
+}
+
+.sidebar .sidebar-item .item-header {
+    overflow: hidden;
+    background-color: rgb(249, 242, 237);
+    padding-left: 5%;
+}
+
+.sidebar .sidebar-item .item-nodes {
+    height: calc(100% - 20px);
+    overflow: auto;
+}
+
+.sidebar .sidebar-item .item-nodes::-webkit-scrollbar{
+    width: 10px;
+}
+.sidebar .sidebar-item .item-nodes::-webkit-scrollbar-track{
+    background-color: rgb(247, 231, 219);
+}
+
+.sidebar .sidebar-item .item-nodes::-webkit-scrollbar-thumb {
+    background-color: rgb(226, 203, 186);
+}
+
+.sidebar-item .item-node {
+    padding-left: 10%;
+    cursor: pointer;
+}
+
+.search-result .item-node {
+    cursor: pointer;
+}
+
+.item-node.normal {
+    background-color: rgb(249, 242, 237);
+}
+
+.item-node.focused {
+    background-color: rgb(254, 235, 216);
+}

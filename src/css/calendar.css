@@ -64,12 +64,21 @@
 
 /* Calendar */
 .calendar {
-    height: 95%;
-    width: 95%;
+    height: 250px;
+    width: 250px;
+    top: 0%;
+    right: 0%;
     border-radius: 18px;
     background: #ffffff;
     user-select: none;
+    opacity: 0%;
+    transition: 0.3s;
     position: absolute;
+    border-radius: 15px;
+    background-color: rgba(251, 251, 250, 0.9);
+    border-style: solid;
+    border-color: rgb(201, 184, 171);
+    border-width: 2px;
 }
 
 #calendar {

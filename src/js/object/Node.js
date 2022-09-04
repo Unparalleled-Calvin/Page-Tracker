@@ -23,6 +23,7 @@ class Node {
             Object.assign(defaultParams, params || {})
             // $.extend(defaultParams, params)
         }
+        this.type = defaultParams.type
         this.id = defaultParams.id
         this.url = defaultParams.url
         this.caption = defaultParams.caption
@@ -33,7 +34,6 @@ class Node {
         this.visitCount = defaultParams.visitCount
         this.isCollected = defaultParams.isCollected
         // this.isCopied = defaultParams.isCopied
-        this.type = defaultParams.type
         this.prev = defaultParams.prev
         this.succ = defaultParams.succ
     }
@@ -71,8 +71,19 @@ class Node {
             this.prev.toString() == node.prev.toString() &&
             this.succ.toString() == node.succ.toString()
     }
-    genHrefTag(captionLimit) {
-        let caption, hrefTag
+    like(keyword) { // how much the node is similar to the keyword
+        if (keyword != "") {
+            if (this.caption.includes(keyword)) {
+                return 1
+            }
+            if (this.url.includes(keyword)) {
+                return 2
+            }
+        }
+        return -1
+    }
+    genCaption() {
+        let caption
         if (this.caption) {
             caption = this.caption
         }
@@ -82,6 +93,10 @@ class Node {
         else {
             caption = String(this.id)
         }
+        return caption
+    }
+    genHrefTag(captionLimit) {
+        let caption = this.genCaption(), hrefTag
         if (caption.length > captionLimit) {
             let letterPattern = new RegExp("[A-Za-z]"); let firstLine = caption.substring(0, captionLimit)
             let cut1 = 1, cnt = 0, i

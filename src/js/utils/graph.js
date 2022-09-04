@@ -24,6 +24,8 @@ function centerSvgAroundElement(svg, g, node) {
 let previousTransform
 let firstDisplay = true
 let previousGraph
+let graph
+let rootIndex = 0
 
 function readAndRenderGraph(date, containerId, tooltipId, zoom) {
     getHistoryByDate(date).then(function (history) {
@@ -33,9 +35,9 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom) {
 
         let render = new dagreD3.render();
 
-        let graph = history.graph
-        
-        if(formatDate(date, "yyyy-MM-dd") != formatDate(new Date(), "yyyy-MM-dd")) {
+        graph = history.graph.subGraph(rootIndex)
+
+        if (formatDate(date, "yyyy-MM-dd") != formatDate(new Date(), "yyyy-MM-dd")) {
             graph.nodes.forEach((node, index) => {
                 node.type = "default"
             })
@@ -79,27 +81,51 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom) {
                     d3.select(".node.highlight").node() ? d3.select(".node.highlight") : d3.select(".node")
                 )
             }
+
+            let nodesList = []
+            let rootNode = graph.nodes[0]
+            if (rootIndex == 0) {
+                nodesList.push([rootNode, 0])
+                rootNode.succ.forEach((edgeIndex, index) => {
+                    let edge = graph.edges[edgeIndex]
+                    if (edge.type != "wasted") {
+                        let nodeIndex = edge.dst
+                        let node = graph.nodes[nodeIndex]
+                        nodesList.push([node, nodeIndex])
+                    }
+                })
+            }
+            else {
+                nodesList.push([new Node(), 0])
+            }
+            renderSidebarItems(nodesList, date)
         }
 
         d3.selectAll(".node").on("mouseenter", function (id) {
-            d3.selectAll(".node").classed("unfocused", true);
-            d3.selectAll(".edgePath").classed("unfocused", true);
-            d3.selectAll(".node").classed("normal", false);
-            d3.selectAll(".edgePath").classed("normal", false);
-            d3.select(this).classed("focused", true);
-            d3.select(this).classed("unfocused", false);
+            d3.selectAll(".node")
+                .classed("unfocused", true)
+                .classed("normal", false);
+            d3.selectAll(".edgePath")
+                .classed("unfocused", true)
+                .classed("normal", false);
+            d3.select(this)
+                .classed("focused", true)
+                .classed("unfocused", false);
 
             d3.select(tooltipSelector)
-                .html(graph.nodes[id].infoHTML())
+                .html(graph.nodes[id].infoHTML(false))
                 .style("top", event.pageY + 20 + "px")
                 .style("left", event.pageX + 20 + "px")
         });
         d3.selectAll(".node").on("mouseleave", function () {
-            d3.selectAll(".node").classed("unfocused", false);
-            d3.selectAll(".edgePath").classed("unfocused", false);
-            d3.selectAll(".node").classed("normal", true);
-            d3.selectAll(".edgePath").classed("normal", true);
-            d3.select(this).classed("focused", false);
+            d3.selectAll(".node")
+                .classed("unfocused", false)
+                .classed("normal", true);
+            d3.selectAll(".edgePath")
+                .classed("unfocused", false)
+                .classed("normal", true);
+            d3.select(this)
+                .classed("focused", false);
 
             d3.select(tooltipSelector)
                 .style("top", "-500px")
@@ -118,14 +144,15 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom) {
 function refreshPage(date, containerId, tooltipId, zoom) {
     previousTransform = undefined
     firstDisplay = true
+    rootIndex = 0
     readAndRenderGraph(date, containerId, tooltipId, zoom)
 }
 
 chrome.storage.onChanged.addListener(function (changes, namespace) {
     for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
-      if (key.substring(0, keyPrefix.length) == keyPrefix) {
-        readAndRenderGraph(date, containerId, tooltipId, zoom)
-      }
+        if (key.substring(0, keyPrefix.length) == keyPrefix) {
+            readAndRenderGraph(date, containerId, tooltipId, zoom)
+        }
     }
 });
 

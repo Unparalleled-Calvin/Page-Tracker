@@ -1,0 +1,39 @@
+.nav {
+    height: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav .nav-button-wrapper {
+    width: 95%;
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav .nav-button-wrapper .left-button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav .nav-button-wrapper .right-button-wrapper {
+    display: flex;
+    align-items: space-between;
+    justify-content: space-between;
+}
+
+.nav .nav-button-wrapper .nav-button {
+    font-size: 15px;
+    border-radius: 5px;
+    height: 80%;
+    width: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    transition: 0.2s ease;
+}

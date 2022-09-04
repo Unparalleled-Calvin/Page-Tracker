@@ -20,6 +20,7 @@ class Graph {
         this.edges = defaultParams.edges
     }
     dagre() {
+        this.tidyGraph()
         let g = new dagreD3.graphlib.Graph()
             .setGraph({
                 rankdir: 'LR'
@@ -32,11 +33,6 @@ class Graph {
                     label: node.genLabel(30, 20),
                     class: node.type
                 })
-                if (!node.prev.length && index) {
-                    g.setEdge(0, index, {
-                        class: "default",
-                    })
-                }
             }
         })
         this.edges.forEach((edge, index) => {
@@ -53,6 +49,20 @@ class Graph {
         });
 
         return g
+    }
+    tidyGraph() { // supplement edges, clean arrays
+        this.nodes.forEach((node, index) => {
+            node.prev = Array.from(new Set(node.prev))
+            node.succ = Array.from(new Set(node.succ))
+        })
+        this.nodes.forEach((node, index) => {
+            if (node.type != "wasted" && !node.prev.length && index) {
+                let edgeIndex = this.addEdge(new Edge({ src: 0, dst: index }))
+                node.prev.push(edgeIndex)
+                this.nodes[0].succ.push(edgeIndex)
+            }
+        })
+        return this
     }
     queryNode(field, value) { // query the node index by sepcific field e.g. queryNode("url", "https://www.example.com"). returns index if found, -1 otherwise
         let idx = -1
@@ -123,24 +133,82 @@ class Graph {
         node1.type = "wasted"
         node1.prev.forEach((edgeIndex, index) => {
             let edge = this.edges[edgeIndex]
-            if (this.queryEdge(edge.src, index2) != -1 || edge.src == index2) { // exists edge from prev to node2
-                edge.type = "wasted"
-            }
-            else {
-                edge.dst = index2
-                node2.prev.push(edgeIndex)
+            edge.type = "wasted"
+            if (this.queryEdge(edge.src, index2) == -1 && edge.src != index2) { // exists no edge from prev to node2
+                let newEdgeIndex = this.addEdge(new Edge({src: edge.src, dst: index2}))
+                node2.prev.push(newEdgeIndex)
             }
         })
         node1.succ.forEach((edgeIndex, index) => {
             let edge = this.edges[edgeIndex]
-            if (this.queryEdge(index2, edge.dst) != -1 || edge.dst == index2) { // exists edge from node2 to dst
-                edge.type = "wasted"
-            }
-            else {
-                edge.src = index2
-                node2.succ.push(edgeIndex)
+            edge.type = "wasted"
+            if (this.queryEdge(index2, edge.dst) == -1 && edge.dst != index2) { // exists no edge from node2 to dst
+                let newEdgeIndex = this.addEdge(new Edge({src: index2, dst: edge.dst}))
+                node2.succ.push(newEdgeIndex)
             }
         })
         return this.nodes
+    }
+    markNode(index) { // recursively mark "default"
+        let node = this.nodes[index]
+        if (node.type != "default") {
+            node.type = "default"
+            node.succ.forEach((edgeIndex, index) => {
+                this.markEdge(edgeIndex)
+            })
+        }
+    }
+    markEdge(index) { // recursively mark "default"
+        let edge = this.edges[index]
+        if (edge.type != "default") {
+            edge.type = "default"
+            this.markNode(edge.dst)
+        }
+    }
+    exchangeNode(index1, index2) { // exchange node1 and node2
+        this.nodes[index1].prev.forEach((edgeIndex, index) => {
+            this.edges[edgeIndex].dst = index2
+        })
+        this.nodes[index1].succ.forEach((edgeIndex, index) => {
+            this.edges[edgeIndex].src = index2
+        })
+        this.nodes[index2].prev.forEach((edgeIndex, index) => {
+            this.edges[edgeIndex].dst = index1
+        })
+        this.nodes[index2].succ.forEach((edgeIndex, index) => {
+            this.edges[edgeIndex].src = index1
+        })
+        let node = this.nodes[index1]
+        this.nodes[index1] = this.nodes[index2]
+        this.nodes[index2] = node
+    }
+    subGraph(rootIndex) { // generate a subgraph with index as root
+        this.tidyGraph()
+        let subgraph = new Graph({ graph: this }) // deep copy self
+        subgraph.nodes.forEach((node, index) => {
+            node.type = "wasted"
+        })
+        subgraph.edges.forEach((edge, index) => {
+            edge.type = "wasted"
+        })
+        subgraph.markNode(rootIndex)
+        this.nodes.forEach((node, index) => {
+            if (node.type == "wasted") {
+                subgraph.nodes[index].type = "wasted"
+                node.prev.forEach((edgeIndex) => {
+                    subgraph.edges[edgeIndex].type = "wasted"
+                })
+                node.succ.forEach((edgeIndex) => {
+                    subgraph.edges[edgeIndex].type = "wasted"
+                })
+            }
+        })
+        subgraph.nodes.forEach((node, index) => {
+            if (this.nodes[index].type == "highlight" && node.type == "default") {
+                node.type = "highlight"
+            }
+        })
+        subgraph.exchangeNode(0, rootIndex)
+        return subgraph
     }
 }
