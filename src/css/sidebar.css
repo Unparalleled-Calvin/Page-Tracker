@@ -45,10 +45,11 @@
     height: 20px;
     width: 80%;
     border: 2px;
+    border-right: 0px;
     border-color: rgb(201, 184, 171);
-    outline: none;
     border-radius: 5px 0 0 5px;
     border-style: solid;
+    outline: none;
 }
 
 .sidebar .sidebar-search .search-button {
@@ -63,6 +64,19 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+}
+
+.sidebar .sidebar-search .search-result {
+    display: none;
+    position: absolute;
+    top: 88px;
+    min-height: 20px;
+    width: calc(95% - 4px);
+    background-color: rgb(255, 255, 255);
+    border: 2px;
+    border-color: rgb(201, 184, 171);
+    border-radius: 0 0 5px 5px;
+    border-style: solid;
 }
 
 .sidebar .sidebar-item {
