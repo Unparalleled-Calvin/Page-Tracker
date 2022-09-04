@@ -7,46 +7,39 @@ A plug-in providing friendly & visual browsing history on Edge & Chrome to help 
 - Record browsing trace in the background and use local storage
 - Render beautiful and zoomable graph with clickable nodes
 - Mark important pages
+- Search pages by specific keywords
 - Select any day in history
 
 #### UI
 
-<div>
-    <img src="https://s1.328888.xyz/2022/09/02/kGqaI.png">
-    <img src="https://s1.328888.xyz/2022/09/02/kGXJj.png">
-</div>
+- empty page
+
+  ![](./src/image/root.png)
+
+- current page highlighted
+
+  ![](./src/image/highlight.png)
+
+- search pages by specific keywords
+
+  ![](./src/image/search.png)
+
+- click an item and show the subgraph
+
+  ![](./src/image/subgraph.png)
+
+- travel to any day you want through the calendar
+
+  ![](./src/image/calendar.png)
+
 
 #### Data Flow
 
-![image-20220902130701055](https://s1.328888.xyz/2022/09/02/kG8N5.png)
+![](./src/image/dataflow.png)
 
 #### Authors
 
-South of the Yangtze River in Microsoft Edge Contest 2022
-
-A plug-in providing friendly & visual browsing history on Edge & Chrome.
-
-#### Features
-
-- Record browsing trace in the background and use local storage
-- Render beautiful and zoomable graph with clickable nodes
-- Mark important pages
-- Select any day in history
-
-#### UI
-
-<div>
-    <img src="https://s1.328888.xyz/2022/09/02/kGqaI.png">
-    <img src="https://s1.328888.xyz/2022/09/02/kGXJj.png">
-</div>
-
-#### Data Flow
-
-![image-20220902130701055](https://s1.328888.xyz/2022/09/02/kG8N5.png)
-
-#### Authors
-
-South of the Yangtze River in Microsoft Edge Contest 2022
+South of the Yangtze River in Microsoft Edge Extension Contest 2022
 
 - Developer
   - [Chenhao Cui](https://github.com/Unparalleled-Calvin)
