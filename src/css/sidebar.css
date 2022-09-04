@@ -79,6 +79,18 @@
     border-style: solid;
 }
 
+.sidebar .sidebar-search .search-result .item-node {
+    cursor: pointer;
+}
+
+.sidebar .sidebar-search .search-result .item-node.normal {
+    background-color: rgb(249, 242, 237);
+}
+
+.sidebar .sidebar-search .search-result .item-node.focused {
+    background-color: rgb(254, 235, 216);
+}
+
 .sidebar .sidebar-item {
     height: calc(100% - 60px);
     font-size: 15px;

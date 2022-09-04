@@ -71,6 +71,17 @@ class Node {
             this.prev.toString() == node.prev.toString() &&
             this.succ.toString() == node.succ.toString()
     }
+    like(keyword) { // how much the node is similar to the keyword
+        if(keyword != "") {
+            if(this.caption.includes(keyword)) {
+                return 1
+            }
+            if(this.url.includes(keyword)) {
+                return 2
+            }
+        }
+        return -1
+    }
     genCaption() {
         let caption
         if (this.caption) {
