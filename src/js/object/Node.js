@@ -37,7 +37,7 @@ class Node {
         this.prev = defaultParams.prev
         this.succ = defaultParams.succ
     }
-    infoHTML(debug = false) {
+    infoHTML(debug = true) {
         let html
         if (debug) {
             html = "id: " + this.id + "<br>"
@@ -54,10 +54,10 @@ class Node {
         }
         else {
             html = "Time&nbsp;&nbsp;&nbsp;&nbsp;:" + this.totalTime + "s<br>"
-                 + "Count&nbsp;&nbsp;&nbsp;:" + this.visitCount + "<br>"
+                + "Count&nbsp;&nbsp;&nbsp;:" + this.visitCount + "<br>"
             if (this.isCollected)
                 html += "Favorite:True<br>"
-                         
+
         }
         return html
     }
@@ -72,11 +72,11 @@ class Node {
             this.succ.toString() == node.succ.toString()
     }
     like(keyword) { // how much the node is similar to the keyword
-        if(keyword != "") {
-            if(this.caption.includes(keyword)) {
+        if (keyword != "") {
+            if (this.caption.includes(keyword)) {
                 return 1
             }
-            if(this.url.includes(keyword)) {
+            if (this.url.includes(keyword)) {
                 return 2
             }
         }
