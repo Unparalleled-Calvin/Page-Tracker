@@ -1,6 +1,7 @@
 function bindListenerToItemNode() {
     d3.selectAll(".item-node")
         .on("click", function () {
+            d3.select(".search-result").style("display", "none")
             rootIndex = parseInt(d3.select(this).attr("node-index"))
             previousTransform = undefined
             firstDisplay = true
@@ -65,31 +66,55 @@ function renderSearchResult() {
     nodesList.sort(function (nodeInfo1, nodeInfo2) {
         return nodeInfo1[2] - nodeInfo2[2]
     })
-    .forEach((nodeInfo) => {
-        let node = nodeInfo[0]
-        let index = nodeInfo[1]
-        let likeRank = nodeInfo[2]
-        searchResult
-            .append("div")
-            .classed("normal", true)
-            .classed("item-node", true)
-            .attr("node-index", index)
-            .attr("like-rank", likeRank)
-            .text(node.genCaption())
-    })
-    
+        .forEach((nodeInfo) => {
+            let node = nodeInfo[0]
+            let index = nodeInfo[1]
+            let likeRank = nodeInfo[2]
+            searchResult
+                .append("div")
+                .classed("normal", true)
+                .classed("item-node", true)
+                .attr("node-index", index)
+                .attr("like-rank", likeRank)
+                .text(node.genCaption())
+        })
+
     bindListenerToItemNode()
 }
 
-d3.select(".search-input").on("input", function () {
-    renderSearchResult()
-})
+let mouseOutOfSearch
 
-d3.select(".search-button").on("click", function() {
-    renderSearchResult()
-})
+d3.select(".search-input")
+    .on("focus", function () {
+        renderSearchResult()
+    })
+    .on("input", function () {
+        renderSearchResult()
+    })
+    .on("blur", function () {
+        if ((d3.select(".search-result").style("display") != "none" && mouseOutOfSearch) || d3.select(".search-result .item-node").node() == null) {
+            d3.select(".search-result").style("display", "none")
+        }
+    })
 
-d3.select(".search-input").on("blur", function () {
-    d3.select(".search-result")
-        .style("display", "none")
-})
+d3.select(".search-button")
+    .on("click", function () {
+        renderSearchResult()
+    })
+
+
+d3.select(".search-wrapper")
+    .on("mouseenter", function () {
+        mouseOutOfSearch = false
+    })
+    .on("mouseleave", function () {
+        mouseOutOfSearch = true
+    })
+
+d3.select(".search-result")
+    .on("mouseenter", function () {
+        mouseOutOfSearch = false
+    })
+    .on("mouseleave", function () {
+        mouseOutOfSearch = true
+    })
