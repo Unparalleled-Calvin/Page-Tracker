@@ -37,7 +37,7 @@ class Node {
         this.prev = defaultParams.prev
         this.succ = defaultParams.succ
     }
-    infoHTML(debug = true) {
+    infoHTML(debug = false) {
         let html
         if (debug) {
             html = "id: " + this.id + "<br>"

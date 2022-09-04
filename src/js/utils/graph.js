@@ -113,7 +113,7 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom) {
                 .classed("unfocused", false);
 
             d3.select(tooltipSelector)
-                .html(graph.nodes[id].infoHTML())
+                .html(graph.nodes[id].infoHTML(false))
                 .style("top", event.pageY + 20 + "px")
                 .style("left", event.pageX + 20 + "px")
         });
