@@ -151,7 +151,12 @@ function refreshPage(date, containerId, tooltipId, zoom) {
 chrome.storage.onChanged.addListener(function (changes, namespace) {
     for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
         if (key.substring(0, keyPrefix.length) == keyPrefix) {
-            readAndRenderGraph(date, containerId, tooltipId, zoom)
+            if (newValue == undefined) {
+                refreshPage(date, containerId, tooltipId, zoom)
+            }
+            else {
+                readAndRenderGraph(date, containerId, tooltipId, zoom)
+            }
         }
     }
 });
