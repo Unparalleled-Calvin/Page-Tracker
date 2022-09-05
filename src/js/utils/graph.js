@@ -39,7 +39,9 @@ function readAndRenderGraph(date, containerId, tooltipId, zoom) {
 
         if (formatDate(date, "yyyy-MM-dd") != formatDate(new Date(), "yyyy-MM-dd")) {
             graph.nodes.forEach((node, index) => {
-                node.type = "default"
+                if (node.type == "highlight") {
+                    node.type = "default"
+                }
             })
         }
 
